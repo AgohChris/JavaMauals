@@ -100,23 +100,23 @@
         <span class="keyword">this</span>.couleur = couleur;
         <span class="keyword">this</span>.numero = numero; 
         <span class="keyword">this</span>.chauffeur = chauffeur;
-        <span class="keyword">this</span>.enMarche = <span class="keyword">false</span>; <span class="comment">// Au début, gbaka la est arrêté</span>
+        <span class="keyword">this</span>.enMarche = <span class="keyword">false</span>; <span class="comment">// Au début, le gbaka est arrêté</span>
     }
     
     <span class="comment">// Les actions (les méthodes)</span>
     <span class="keyword">public void</span> <span class="method">demarrer</span>() {
         <span class="keyword">if</span> (!enMarche) {
             enMarche = <span class="keyword">true</span>;
-            System.out.println(<span class="string">"gbaka la "</span> + numero + <span class="string">" démarre ! Vroooom !"</span>);
+            System.out.println(<span class="string">"Le gbaka "</span> + numero + <span class="string">" démarre ! Vroooom !"</span>);
         } <span class="keyword">else</span> {
-            System.out.println(<span class="string">"Eh waiye vié mogor, gbaka la roule déjà oh !"</span>);
+            System.out.println(<span class="string">"Eh waiye vié mogor, le gbaka roule déjà oh !"</span>);
         }
     }
     
     <span class="keyword">public void</span> <span class="method">arreter</span>() {
         <span class="keyword">if</span> (enMarche) {
             enMarche = <span class="keyword">false</span>;
-            System.out.println(<span class="string">"gbaka la "</span> + numero + <span class="string">" s'arrête. On descend !"</span>);
+            System.out.println(<span class="string">"Le gbaka "</span> + numero + <span class="string">" s'arrête. On descend !"</span>);
         }
     }
 }</code></pre>
@@ -131,9 +131,9 @@
         <span class="comment">// Créer un nouveau gbaka</span>
         <span class="class-name">Gbaka</span> gbaka1 = <span class="keyword">new</span> <span class="class-name">Gbaka</span>(<span class="string">"Jaune"</span>, <span class="string">"CI-5478"</span>, <span class="string">"Kouassi"</span>);
         
-        gbaka1.demarrer(); <span class="comment">// gbaka la CI-5478 démarre ! Vroooom !</span>
-        gbaka1.demarrer(); <span class="comment">// Eh waiye vié mogor, gbaka la roule déjà oh !</span>
-        gbaka1.arreter();  <span class="comment">// gbaka la CI-5478 s'arrête. On descend !</span>
+        gbaka1.demarrer(); <span class="comment">// Le gbaka CI-5478 démarre ! Vroooom !</span>
+        gbaka1.demarrer(); <span class="comment">// Eh waiye vié mogor, le gbaka roule déjà oh !</span>
+        gbaka1.arreter();  <span class="comment">// Le gbaka CI-5478 s'arrête. On descend !</span>
     }
 }</code></pre>
                 </div>
@@ -310,9 +310,109 @@
         System.out.println(<span class="string">"Maquis "</span> + nom + <span class="string">" ouvre ses portes !"</span>);
     }
     
+    <span class="keyword">public void</span> <span class="method">accueillirClient</span>() {
+        System.out.println(<span class="string">"Bienvenue chez "</span> + proprietaire + <span class="string">" !"</span>);
+    }
+    
     <span class="comment">// Méthode abstraite - chaque maquis doit la définir</span>
     <span class="keyword">public abstract void</span> <span class="method">preparerPlatSignature</span>();
     <span class="keyword">public abstract int</span> <span class="method">getPrixMoyen</span>();
+    <span class="keyword">public abstract void</span> <span class="method">afficherMenu</span>();
+}</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <p>On a maintenant le modèle. Créons des maquis spécialisés qui héritent de ce modèle. Chaque maquis devra fournir sa propre version des méthodes abstraites.</p>
+                </div>
+
+                <h4>Maquis spécialisé en Poisson</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="comment">// Maquis spécialisé en poisson braisé</span>
+<span class="keyword">public class</span> <span class="class-name">MaquisPoisson</span> <span class="keyword">extends</span> <span class="class-name">Maquis</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> typePoisson;
+    
+    <span class="keyword">public</span> <span class="method">MaquisPoisson</span>(<span class="class-name">String</span> nom, <span class="class-name">String</span> proprietaire, <span class="keyword">int</span> nbTables, <span class="class-name">String</span> typePoisson) {
+        <span class="keyword">super</span>(nom, proprietaire, nbTables);
+        <span class="keyword">this</span>.typePoisson = typePoisson;
+    }
+    
+    <span class="keyword">@Override</span>
+    <span class="keyword">public void</span> <span class="method">preparerPlatSignature</span>() {
+        System.out.println(<span class="string">"Préparation du "</span> + typePoisson + <span class="string">" braisé..."</span>);
+        System.out.println(<span class="string">"On met les épices, on braise bien... Mmmm ça sent bon !"</span>);
+    }
+    
+    <span class="keyword">@Override</span>
+    <span class="keyword">public int</span> <span class="method">getPrixMoyen</span>() {
+        <span class="keyword">return</span> 2500; <span class="comment">// Prix moyen 2500F</span>
+    }
+    
+    <span class="keyword">@Override</span>
+    <span class="keyword">public void</span> <span class="method">afficherMenu</span>() {
+        System.out.println(<span class="string">"=== MENU "</span> + nom.toUpperCase() + <span class="string">" ==="</span>);
+        System.out.println(<span class="string">"- "</span> + typePoisson + <span class="string">" braisé: 2500F"</span>);
+        System.out.println(<span class="string">"- Attiéké garni: 2000F"</span>); 
+        System.out.println(<span class="string">"- Alloco poisson: 3000F"</span>);
+    }
+}</code></pre>
+                </div>
+
+                <h4>Maquis spécialisé en Viande</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="comment">// Maquis spécialisé en viande</span>
+<span class="keyword">public class</span> <span class="class-name">MaquisViande</span> <span class="keyword">extends</span> <span class="class-name">Maquis</span> {
+    
+    <span class="keyword">public</span> <span class="method">MaquisViande</span>(<span class="class-name">String</span> nom, <span class="class-name">String</span> proprietaire, <span class="keyword">int</span> nbTables) {
+        <span class="keyword">super</span>(nom, proprietaire, nbTables);
+    }
+    
+    <span class="keyword">@Override</span>
+    <span class="keyword">public void</span> <span class="method">preparerPlatSignature</span>() {
+        System.out.println(<span class="string">"Préparation du choukouya..."</span>);
+        System.out.println(<span class="string">"La viande grille sur le feu... Les épices sentent fort !"</span>);
+    }
+    
+    <span class="keyword">@Override</span>
+    <span class="keyword">public int</span> <span class="method">getPrixMoyen</span>() {
+        <span class="keyword">return</span> 3000; <span class="comment">// La viande coûte plus cher</span>
+    }
+    
+    <span class="keyword">@Override</span>
+    <span class="keyword">public void</span> <span class="method">afficherMenu</span>() {
+        System.out.println(<span class="string">"=== MENU "</span> + nom.toUpperCase() + <span class="string">" ==="</span>);
+        System.out.println(<span class="string">"- Choukouya: 3000F"</span>);
+        System.out.println(<span class="string">"- Kedjenou: 3500F"</span>);
+        System.out.println(<span class="string">"- Brochettes: 2800F"</span>);
+    }
+}</code></pre>
+                </div>
+
+                <div class="info-box go">
+                    <h4>🚀 Utilisation pratique</h4>
+                    <p>Voyons comment tout ça fonctionne ensemble. On crée des instances de nos maquis et on appelle leurs méthodes.</p>
+                </div>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="keyword">public class</span> <span class="class-name">GestionMaquis</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">MaquisPoisson</span> poissonDor = <span class="keyword">new</span> <span class="class-name">MaquisPoisson</span>(<span class="string">"Poisson d'Or"</span>, <span class="string">"Tante Adjoa"</span>, 8, <span class="string">"Capitaine"</span>);
+        <span class="class-name">MaquisViande</span> chezKouame = <span class="keyword">new</span> <span class="class-name">MaquisViande</span>(<span class="string">"Chez Kouamé"</span>, <span class="string">"Papa Kouamé"</span>, 12);
+        
+        <span class="comment">// Tous les maquis font les bases pareilles</span>
+        poissonDor.ouvrirMaquis();
+        poissonDor.accueillirClient();
+        poissonDor.afficherMenu();
+        poissonDor.preparerPlatSignature();
+        
+        System.out.println(<span class="string">"\n---\n"</span>);
+        
+        chezKouame.ouvrirMaquis();
+        chezKouame.accueillirClient(); 
+        chezKouame.afficherMenu();
+        chezKouame.preparerPlatSignature();
+    }
 }</code></pre>
                 </div>
 
