@@ -439,8 +439,9 @@
                         précis.</p>
                 </div>
 
-                <h3>ArrayList - La liste normale</h3>
+                <h3>📚 Les types de List</h3>
 
+                <h4>ArrayList - La liste normale</h4>
                 <div class="code-block">
                     <button class="copy-btn" onclick="copyCode(this)">Copier</button>
                     <pre><code><span class="keyword">import</span> java.util.*;
@@ -466,24 +467,48 @@
         <span class="comment">// Modifier un élément</span>
         courses.set(1, <span class="string">"Gros oignons"</span>);
         System.out.println(<span class="string">"Liste modifiée: "</span> + courses);
+        
+        <span class="comment">// Supprimer</span>
+        courses.remove(<span class="string">"Piment"</span>);
+        System.out.println(<span class="string">"Sans piment: "</span> + courses);
+        
+        <span class="comment">// Taille de la liste</span>
+        System.out.println(<span class="string">"Nombre d'items: "</span> + courses.size());
     }
 }</code></pre>
                 </div>
 
-                <div class="exercise">
-                    <h4>🏋️‍♂️ EXERCICE 4 : Gestionnaire de Playlist</h4>
-                    <p>Crée un programme qui gère une playlist musicale avec les fonctionnalités :</p>
-                    <ul>
-                        <li>Ajouter des chansons</li>
-                        <li>Supprimer des chansons</li>
-                        <li>Afficher la playlist</li>
-                        <li>Mélanger la playlist</li>
-                    </ul>
-                    <button class="btn btn-success" onclick="toggleSolution('solution4')">Voir la solution</button>
+                <h4>LinkedList - La chaîne</h4>
+                <p>Meilleure quand tu ajoutes/supprimes beaucoup au début ou à la fin.</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="keyword">import</span> java.util.LinkedList;
 
-                    <div id="solution4" class="solution">
-                        <div class="code-block">
-                            <pre><code><span class="keyword">public class</span> <span class="class-name">PlaylistManager</span> {
+<span class="keyword">public class</span> <span class="class-name">FileAttente</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="comment">// Meilleure quand tu ajoutes/supprimes beaucoup au début</span>
+        <span class="class-name">LinkedList</span>&lt;<span class="class-name">String</span>&gt; fileAttente = <span class="keyword">new</span> <span class="class-name">LinkedList</span>&lt;&gt;();
+        fileAttente.addFirst(<span class="string">"Kouassi"</span>); <span class="comment">// Arrive en premier</span>
+        fileAttente.addFirst(<span class="string">"Aya"</span>);     <span class="comment">// Passe devant Kouassi</span>
+        fileAttente.addLast(<span class="string">"Adjoua"</span>);   <span class="comment">// Se met à la fin</span>
+
+        System.out.println(<span class="string">"File d'attente: "</span> + fileAttente);
+        <span class="comment">// [Aya, Kouassi, Adjoua]</span>
+
+        <span class="class-name">String</span> suivant = fileAttente.removeFirst(); <span class="comment">// Aya sort</span>
+        System.out.println(suivant + <span class="string">" est servi !"</span>);
+    }
+}</code></pre>
+                </div>
+
+                <h3>🎯 Exemple concret : Gestionnaire de playlists</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="keyword">import</span> java.util.ArrayList;
+<span class="keyword">import</span> java.util.Collections;
+<span class="keyword">import</span> java.util.List;
+
+<span class="keyword">public class</span> <span class="class-name">PlaylistManager</span> {
     <span class="keyword">private</span> <span class="class-name">List</span>&lt;<span class="class-name">String</span>&gt; chansons;
     
     <span class="keyword">public</span> <span class="method">PlaylistManager</span>() {
@@ -495,12 +520,49 @@
         System.out.println(<span class="string">"✓ Ajouté: "</span> + titre);
     }
     
+    <span class="keyword">public void</span> <span class="method">supprimerChanson</span>(<span class="class-name">String</span> titre) {
+        <span class="keyword">if</span> (chansons.remove(titre)) {
+            System.out.println(<span class="string">"✗ Supprimé: "</span> + titre);
+        } <span class="keyword">else</span> {
+            System.out.println(<span class="string">"Chanson introuvable: "</span> + titre);
+        }
+    }
+    
+    <span class="keyword">public void</span> <span class="method">afficherPlaylist</span>() {
+        System.out.println(<span class="string">"
+🎵 MA PLAYLIST 🎵"</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; chansons.size(); i++) {
+            System.out.println((i + 1) + <span class="string">". "</span> + chansons.get(i));
+        }
+        System.out.println(<span class="string">"Total: "</span> + chansons.size() + <span class="string">" chansons
+"</span>);
+    }
+    
     <span class="keyword">public void</span> <span class="method">melangerPlaylist</span>() {
         <span class="class-name">Collections</span>.shuffle(chansons);
         System.out.println(<span class="string">"🔀 Playlist mélangée !"</span>);
     }
+    
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">PlaylistManager</span> playlist = <span class="keyword">new</span> <span class="class-name">PlaylistManager</span>();
+        
+        playlist.ajouterChanson(<span class="string">"Magic System - Premier Gaou"</span>);
+        playlist.ajouterChanson(<span class="string">"Alpha Blondy - Jerusalem"</span>);
+        playlist.ajouterChanson(<span class="string">"Meiway - 200% Zoblazo"</span>);
+        
+        playlist.afficherPlaylist();
+        playlist.melangerPlaylist();
+        playlist.afficherPlaylist();
+    }
 }</code></pre>
-                        </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE 4 : Liste de clients maquis</h4>
+                    <p>Crée un programme qui gère une liste de clients dans un maquis avec leurs commandes.</p>
+                    <button class="btn btn-success" onclick="toggleSolution('solution4')">Voir la solution</button>
+                    <div id="solution4" class="solution">
+                       <p>La solution de cet exercice sera ajoutée prochainement.</p>
                     </div>
                 </div>
             </section>
@@ -511,12 +573,13 @@
 
                 <div class="info-box why">
                     <h4>🤔 Pourquoi Map ?</h4>
-                    <p>Tu sais ton répertoire téléphonique ? "Kouassi" → "07 XX XX XX XX". En Java,
+                    <p>Tu sais ton répertoire téléphonique ? "Kouassi" → "07 78 74 86 02". En Java,
                         <code>Map&lt;&gt;</code> c'est pareil : pour chaque <strong>clé</strong> (nom), tu as une
                         <strong>valeur</strong> (numéro).
                     </p>
                 </div>
 
+                <h3>📚 Comment ça marche ?</h3>
                 <div class="code-block">
                     <button class="copy-btn" onclick="copyCode(this)">Copier</button>
                     <pre><code><span class="keyword">import</span> java.util.*;
@@ -535,7 +598,14 @@
         <span class="class-name">String</span> numeroKouassi = contacts.get(<span class="string">"Kouassi"</span>);
         System.out.println(<span class="string">"Numéro de Kouassi: "</span> + numeroKouassi);
         
+        <span class="comment">// Vérifier si quelqu'un existe</span>
+        <span class="keyword">if</span> (contacts.containsKey(<span class="string">"Aya"</span>)) {
+            System.out.println(<span class="string">"Aya est dans mes contacts !"</span>);
+        }
+        
         <span class="comment">// Parcourir tous les contacts</span>
+        System.out.println(<span class="string">"
+📞 MES CONTACTS 📞"</span>);
         <span class="keyword">for</span> (<span class="class-name">String</span> nom : contacts.keySet()) {
             System.out.println(nom + <span class="string">" → "</span> + contacts.get(nom));
         }
@@ -543,9 +613,81 @@
 }</code></pre>
                 </div>
 
+                <h3>🎯 Exemple pratique : Stock de marchandises</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="keyword">import</span> java.util.HashMap;
+<span class="keyword">import</span> java.util.Map;
+
+<span class="keyword">public class</span> <span class="class-name">StockMarchandises</span> {
+    <span class="keyword">private</span> <span class="class-name">Map</span>&lt;<span class="class-name">String</span>, <span class="class-name">Integer</span>&gt; stock;
+    <span class="keyword">private</span> <span class="class-name">Map</span>&lt;<span class="class-name">String</span>, <span class="class-name">Integer</span>&gt; prix;
+    
+    <span class="keyword">public</span> <span class="method">StockMarchandises</span>() {
+        stock = <span class="keyword">new</span> <span class="class-name">HashMap</span>&lt;&gt;();
+        prix = <span class="keyword">new</span> <span class="class-name">HashMap</span>&lt;&gt;();
+    }
+    
+    <span class="keyword">public void</span> <span class="method">ajouterProduit</span>(<span class="class-name">String</span> produit, <span class="keyword">int</span> quantite, <span class="keyword">int</span> prixUnitaire) {
+        stock.put(produit, quantite);
+        prix.put(produit, prixUnitaire);
+        System.out.println(<span class="string">"✓ "</span> + produit + <span class="string">" ajouté: "</span> + quantite + <span class="string">" unités à "</span> + prixUnitaire + <span class="string">"F"</span>);
+    }
+    
+    <span class="keyword">public boolean</span> <span class="method">vendre</span>(<span class="class-name">String</span> produit, <span class="keyword">int</span> quantite) {
+        <span class="keyword">if</span> (!stock.containsKey(produit)) {
+            System.out.println(<span class="string">"❌ Produit inexistant: "</span> + produit);
+            <span class="keyword">return false</span>;
+        }
+        
+        <span class="keyword">int</span> stockActuel = stock.get(produit);
+        <span class="keyword">if</span> (stockActuel &lt; quantite) {
+            System.out.println(<span class="string">"❌ Stock insuffisant pour "</span> + produit + <span class="string">" (demandé: "</span> + quantite + <span class="string">", disponible: "</span> + stockActuel + <span class="string">")"</span>);
+            <span class="keyword">return false</span>;
+        }
+        
+        stock.put(produit, stockActuel - quantite);
+        <span class="keyword">int</span> chiffre = quantite * prix.get(produit);
+        System.out.println(<span class="string">"✅ Vendu "</span> + quantite + <span class="string">" "</span> + produit + <span class="string">" pour "</span> + chiffre + <span class="string">"F"</span>);
+        <span class="keyword">return true</span>;
+    }
+    
+    <span class="keyword">public void</span> <span class="method">afficherStock</span>() {
+        System.out.println(<span class="string">"
+📦 STOCK ACTUEL 📦"</span>);
+        <span class="keyword">for</span> (<span class="class-name">String</span> produit : stock.keySet()) {
+            <span class="keyword">int</span> quantite = stock.get(produit);
+            <span class="keyword">int</span> prixUnit = prix.get(produit);
+            System.out.println(produit + <span class="string">": "</span> + quantite + <span class="string">" unités ("</span> + prixUnit + <span class="string">"F/unité)"</span>);
+        }
+        System.out.println();
+    }
+    
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">StockMarchandises</span> boutique = <span class="keyword">new</span> <span class="class-name">StockMarchandises</span>();
+        
+        boutique.ajouterProduit(<span class="string">"Attiéké"</span>, 50, 500);
+        boutique.ajouterProduit(<span class="string">"Alloco"</span>, 30, 300);  
+        boutique.ajouterProduit(<span class="string">"Poisson braisé"</span>, 20, 2000);
+        
+        boutique.afficherStock();
+        
+        boutique.vendre(<span class="string">"Attiéké"</span>, 5);
+        boutique.vendre(<span class="string">"Alloco"</span>, 35); <span class="comment">// Pas assez !</span>
+        boutique.vendre(<span class="string">"Bangui"</span>, 1);  <span class="comment">// N'existe pas !</span>
+        
+        boutique.afficherStock();
+    }
+}</code></pre>
+                </div>
+
                 <div class="exercise">
                     <h4>🏋️‍♂️ EXERCICE 5 : Carnet de notes</h4>
                     <p>Crée un programme qui gère les notes des élèves avec <code>Map&lt;String, Double&gt;</code>.</p>
+                    <button class="btn btn-success" onclick="toggleSolution('solution5')">Voir la solution</button>
+                    <div id="solution5" class="solution">
+                       <p>La solution de cet exercice sera ajoutée prochainement.</p>
+                    </div>
                 </div>
             </section>
 
