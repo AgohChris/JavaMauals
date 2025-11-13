@@ -1408,6 +1408,52 @@ meilleur.ifPresent(e -&gt; System.out.println(<span class="string">"Meilleur: "<
                         <li>Implémente une méthode <code>reserverPlaces(String trajet, int nbPlaces)</code></li>
                         <li>Gère proprement les exceptions avec try-catch</li>
                     </ol>
+
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-exo8')" style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+
+                    <div id="solution-exo8" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">class</span> <span class="class-name">PlacesInsuffisantesException</span> <span class="keyword">extends</span> <span class="class-name">Exception</span> {
+    <span class="keyword">private int</span> placesDisponibles;
+    <span class="keyword">private int</span> placesDemandees;
+
+    <span class="keyword">public</span> <span class="method">PlacesInsuffisantesException</span>(<span class="keyword">int</span> disponibles, <span class="keyword">int</span> demandees) {
+        <span class="keyword">super</span>(<span class="string">"Pas assez de places !"</span>);
+        <span class="keyword">this</span>.placesDisponibles = disponibles;
+        <span class="keyword">this</span>.placesDemandees = demandees;
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getDetails</span>() {
+        <span class="keyword">return</span> <span class="string">"Il reste "</span> + placesDisponibles + <span class="string">" places mais tu demandes "</span> + placesDemandees;
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">GestionnaireTransport</span> {
+    <span class="keyword">private</span> <span class="class-name">Map</span>&lt;<span class="class-name">String</span>, <span class="class-name">Integer</span>&gt; placesParTrajet;
+    <span class="keyword">private final int</span> CAPACITE_GBAKA = <span class="number">19</span>;
+
+    <span class="keyword">public</span> <span class="method">GestionnaireTransport</span>() {
+        placesParTrajet = <span class="keyword">new</span> <span class="class-name">HashMap</span>&lt;&gt;();
+        placesParTrajet.put(<span class="string">"Yopougon-Plateau"</span>, CAPACITE_GBAKA);
+    }
+
+    <span class="keyword">public void</span> <span class="method">reserverPlaces</span>(<span class="class-name">String</span> trajet, <span class="keyword">int</span> nbPlaces)
+            <span class="keyword">throws</span> PlacesInsuffisantesException {
+        <span class="keyword">int</span> placesDisponibles = placesParTrajet.get(trajet);
+        <span class="keyword">if</span> (placesDisponibles &lt; nbPlaces) {
+            <span class="keyword">throw new</span> <span class="class-name">PlacesInsuffisantesException</span>(placesDisponibles, nbPlaces);
+        }
+        placesParTrajet.put(trajet, placesDisponibles - nbPlaces);
+        System.out.println(<span class="string">"✅ Réservation confirmée !"</span>);
+    }
+}
+</code></pre>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="info-box why">
@@ -1490,6 +1536,117 @@ meilleur.ifPresent(e -&gt; System.out.println(<span class="string">"Meilleur: "<
                         <li>Méthodes : <code>ajouterEleve()</code>, <code>ajouterNote()</code>, <code>afficherBulletin()</code></li>
                         <li>Format fichier : <code>Matricule|Nom|Note1,Note2,Note3</code></li>
                     </ol>
+
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-exo9')" style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+
+                    <div id="solution-exo9" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">class</span> <span class="class-name">Eleve</span> {
+    <span class="class-name">String</span> matricule;
+    <span class="class-name">String</span> nom;
+    <span class="class-name">List</span>&lt;<span class="class-name">Double</span>&gt; notes;
+
+    <span class="keyword">public</span> <span class="method">Eleve</span>(<span class="class-name">String</span> matricule, <span class="class-name">String</span> nom) {
+        <span class="keyword">this</span>.matricule = matricule;
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.notes = <span class="keyword">new</span> <span class="class-name">ArrayList</span>&lt;&gt;();
+    }
+
+    <span class="keyword">public void</span> <span class="method">ajouterNote</span>(<span class="keyword">double</span> note) {
+        <span class="keyword">if</span> (note &gt;= <span class="number">0</span> && note &lt;= <span class="number">20</span>) {
+            notes.add(note);
+        }
+    }
+
+    <span class="keyword">public double</span> <span class="method">calculerMoyenne</span>() {
+        <span class="keyword">if</span> (notes.isEmpty()) <span class="keyword">return</span> <span class="number">0.0</span>;
+        <span class="keyword">return</span> notes.stream()
+            .mapToDouble(<span class="class-name">Double</span>::doubleValue)
+            .average()
+            .orElse(<span class="number">0.0</span>);
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">CarnetDeNotes</span> {
+    <span class="keyword">private</span> <span class="class-name">Map</span>&lt;<span class="class-name">String</span>, <span class="class-name">Eleve</span>&gt; eleves;
+    <span class="keyword">private final</span> <span class="class-name">String</span> FICHIER = <span class="string">"carnet_notes.txt"</span>;
+
+    <span class="keyword">public</span> <span class="method">CarnetDeNotes</span>() {
+        eleves = <span class="keyword">new</span> <span class="class-name">HashMap</span>&lt;&gt;();
+        charger();
+    }
+
+    <span class="keyword">private void</span> <span class="method">charger</span>() {
+        <span class="keyword">try</span> {
+            <span class="class-name">List</span>&lt;<span class="class-name">String</span>&gt; lignes = <span class="class-name">Files</span>.readAllLines(<span class="class-name">Paths</span>.get(FICHIER));
+            <span class="keyword">for</span> (<span class="class-name">String</span> ligne : lignes) {
+                <span class="class-name">String</span>[] parts = ligne.split(<span class="string">"\\|"</span>);
+                <span class="class-name">Eleve</span> eleve = <span class="keyword">new</span> <span class="class-name">Eleve</span>(parts[<span class="number">0</span>], parts[<span class="number">1</span>]);
+                <span class="keyword">if</span> (parts.length == <span class="number">3</span>) {
+                    <span class="keyword">for</span> (<span class="class-name">String</span> noteStr : parts[<span class="number">2</span>].split(<span class="string">","</span>)) {
+                        eleve.ajouterNote(<span class="class-name">Double</span>.parseDouble(noteStr));
+                    }
+                }
+                eleves.put(parts[<span class="number">0</span>], eleve);
+            }
+        } <span class="keyword">catch</span> (IOException e) {
+            System.out.println(<span class="string">"📝 Nouveau carnet créé"</span>);
+        }
+    }
+
+    <span class="keyword">private void</span> <span class="method">sauvegarder</span>() {
+        <span class="keyword">try</span> {
+            <span class="class-name">List</span>&lt;<span class="class-name">String</span>&gt; lignes = <span class="keyword">new</span> <span class="class-name">ArrayList</span>&lt;&gt;();
+            <span class="keyword">for</span> (<span class="class-name">Eleve</span> eleve : eleves.values()) {
+                <span class="class-name">String</span> notesStr = eleve.notes.stream()
+                    .map(<span class="class-name">String</span>::valueOf)
+                    .collect(<span class="class-name">Collectors</span>.joining(<span class="string">","</span>));
+                lignes.add(eleve.matricule + <span class="string">"|"</span> + eleve.nom + <span class="string">"|"</span> + notesStr);
+            }
+            <span class="class-name">Files</span>.write(<span class="class-name">Paths</span>.get(FICHIER), lignes);
+            System.out.println(<span class="string">"💾 Sauvegardé !"</span>);
+        } <span class="keyword">catch</span> (IOException e) {
+            System.out.println(<span class="string">"❌ Erreur sauvegarde"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">ajouterEleve</span>(<span class="class-name">String</span> matricule, <span class="class-name">String</span> nom) {
+        eleves.put(matricule, <span class="keyword">new</span> <span class="class-name">Eleve</span>(matricule, nom));
+        sauvegarder();
+    }
+
+    <span class="keyword">public void</span> <span class="method">ajouterNote</span>(<span class="class-name">String</span> matricule, <span class="keyword">double</span> note) {
+        <span class="class-name">Eleve</span> eleve = eleves.get(matricule);
+        <span class="keyword">if</span> (eleve != <span class="keyword">null</span>) {
+            eleve.ajouterNote(note);
+            sauvegarder();
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherBulletin</span>(<span class="class-name">String</span> matricule) {
+        <span class="class-name">Eleve</span> eleve = eleves.get(matricule);
+        <span class="keyword">if</span> (eleve != <span class="keyword">null</span>) {
+            System.out.println(<span class="string">"📋 BULLETIN DE "</span> + eleve.nom);
+            System.out.println(<span class="string">"Notes : "</span> + eleve.notes);
+            System.out.println(<span class="string">"Moyenne : "</span> +
+                String.format(<span class="string">"%.2f"</span>, eleve.calculerMoyenne()) + <span class="string">"/20"</span>);
+        }
+    }
+}
+</code></pre>
+                        </div>
+                        <p><strong>💡 Points clés :</strong></p>
+                        <ul>
+                            <li>✅ Sauvegarde automatique après chaque modification</li>
+                            <li>✅ Format CSV avec délimiteur | pour séparer les champs</li>
+                            <li>✅ Gestion d'erreurs avec try-catch</li>
+                            <li>✅ Les données persistent entre les exécutions !</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="info-box example">
@@ -1584,6 +1741,98 @@ meilleur.ifPresent(e -&gt; System.out.println(<span class="string">"Meilleur: "<
                         <li>Méthode <code>peutRedoubler()</code> qui retourne true sauf pour CM2 et 3EME</li>
                         <li>Méthode <code>getNiveauSuivant()</code> pour passer au niveau supérieur</li>
                     </ol>
+
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-exo10')" style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+
+                    <div id="solution-exo10" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">public enum</span> <span class="class-name">NiveauScolaire</span> {
+    CP1(<span class="string">"Primaire"</span>, <span class="keyword">null</span>),
+    CP2(<span class="string">"Primaire"</span>, <span class="keyword">null</span>),
+    CE1(<span class="string">"Primaire"</span>, <span class="keyword">null</span>),
+    CE2(<span class="string">"Primaire"</span>, <span class="keyword">null</span>),
+    CM1(<span class="string">"Primaire"</span>, <span class="keyword">null</span>),
+    CM2(<span class="string">"Primaire"</span>, <span class="keyword">null</span>),
+    SIXIEME(<span class="string">"Collège"</span>, <span class="keyword">null</span>),
+    CINQUIEME(<span class="string">"Collège"</span>, <span class="keyword">null</span>),
+    QUATRIEME(<span class="string">"Collège"</span>, <span class="keyword">null</span>),
+    TROISIEME(<span class="string">"Collège"</span>, <span class="keyword">null</span>);
+
+    <span class="keyword">private final</span> <span class="class-name">String</span> cycle;
+    <span class="keyword">private</span> <span class="class-name">NiveauScolaire</span> niveauSuivant;
+
+    <span class="method">NiveauScolaire</span>(<span class="class-name">String</span> cycle, <span class="class-name">NiveauScolaire</span> niveauSuivant) {
+        <span class="keyword">this</span>.cycle = cycle;
+        <span class="keyword">this</span>.niveauSuivant = niveauSuivant;
+    }
+
+    <span class="comment">// Initialisation des niveaux suivants</span>
+    <span class="keyword">static</span> {
+        CP1.niveauSuivant = CP2;
+        CP2.niveauSuivant = CE1;
+        CE1.niveauSuivant = CE2;
+        CE2.niveauSuivant = CM1;
+        CM1.niveauSuivant = CM2;
+        CM2.niveauSuivant = SIXIEME;
+        SIXIEME.niveauSuivant = CINQUIEME;
+        CINQUIEME.niveauSuivant = QUATRIEME;
+        QUATRIEME.niveauSuivant = TROISIEME;
+        TROISIEME.niveauSuivant = <span class="keyword">null</span>; <span class="comment">// Fin du parcours</span>
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getCycle</span>() {
+        <span class="keyword">return</span> cycle;
+    }
+
+    <span class="keyword">public</span> <span class="class-name">NiveauScolaire</span> <span class="method">getNiveauSuivant</span>() {
+        <span class="keyword">return</span> niveauSuivant;
+    }
+
+    <span class="keyword">public boolean</span> <span class="method">peutRedoubler</span>() {
+        <span class="comment">// On ne peut pas redoubler CM2 et 3EME</span>
+        <span class="keyword">return</span> <span class="keyword">this</span> != CM2 && <span class="keyword">this</span> != TROISIEME;
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherInfos</span>() {
+        System.out.println(<span class="string">"Niveau : "</span> + <span class="keyword">this</span>.name());
+        System.out.println(<span class="string">"Cycle : "</span> + cycle);
+        System.out.println(<span class="string">"Peut redoubler : "</span> + (peutRedoubler() ? <span class="string">"Oui"</span> : <span class="string">"Non"</span>));
+        System.out.println(<span class="string">"Niveau suivant : "</span> +
+            (niveauSuivant != <span class="keyword">null</span> ? niveauSuivant.name() : <span class="string">"Fin de parcours"</span>));
+    }
+}
+
+<span class="comment">// Test</span>
+<span class="keyword">public class</span> <span class="class-name">TestNiveauScolaire</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">NiveauScolaire</span> niveau = <span class="class-name">NiveauScolaire</span>.CM1;
+
+        System.out.println(<span class="string">"🎓 INFORMATIONS ÉLÈVE 🎓"</span>);
+        niveau.afficherInfos();
+
+        System.out.println(<span class="string">"\n📈 PARCOURS SCOLAIRE 📈"</span>);
+        <span class="class-name">NiveauScolaire</span> current = <span class="class-name">NiveauScolaire</span>.CP1;
+        <span class="keyword">while</span> (current != <span class="keyword">null</span>) {
+            System.out.println(current.name() + <span class="string">" ("</span> + current.getCycle() + <span class="string">") → "</span> +
+                (current.getNiveauSuivant() != <span class="keyword">null</span> ? current.getNiveauSuivant().name() : <span class="string">"FIN"</span>));
+            current = current.getNiveauSuivant();
+        }
+    }
+}
+</code></pre>
+                        </div>
+                        <p><strong>💡 Points clés :</strong></p>
+                        <ul>
+                            <li>✅ Bloc <code>static</code> pour initialiser les relations entre niveaux</li>
+                            <li>✅ Navigation entre niveaux avec <code>getNiveauSuivant()</code></li>
+                            <li>✅ Logique métier avec <code>peutRedoubler()</code></li>
+                            <li>✅ Utilisation de <code>null</code> pour marquer la fin du parcours</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
