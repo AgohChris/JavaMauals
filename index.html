@@ -172,21 +172,21 @@
     <span class="keyword">private int</span> prix;
     <span class="keyword">private</span> <span class="class-name">String</span> vendeur;
     <span class="keyword">private boolean</span> sel;
-    
+
     <span class="keyword">public</span> <span class="method">Attieke</span>(<span class="keyword">double</span> poids, <span class="keyword">int</span> prix, <span class="class-name">String</span> vendeur) {
         <span class="keyword">this</span>.poids = poids;
         <span class="keyword">this</span>.prix = prix;
         <span class="keyword">this</span>.vendeur = vendeur;
         <span class="keyword">this</span>.sel = <span class="keyword">false</span>;
     }
-    
+
     <span class="keyword">public void</span> <span class="method">ajouterSel</span>() {
         <span class="keyword">if</span> (!sel) {
             sel = <span class="keyword">true</span>;
             System.out.println(<span class="string">"Tantie "</span> + vendeur + <span class="string">" ajoute du sel stp"</span>);
         }
     }
-    
+
     <span class="keyword">public int</span> <span class="method">calculerPrixTotal</span>() {
         <span class="keyword">int</span> total = prix;
         <span class="keyword">if</span> (sel) {
@@ -197,6 +197,540 @@
 }</code></pre>
                         </div>
                     </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE 2 : Créer une classe Maquis</h4>
+                    <p>Crée une classe <code>Maquis</code> qui représente un restaurant local :</p>
+                    <ol>
+                        <li>Attributs : <code>nom</code>, <code>proprietaire</code>, <code>nbPlaces</code>, <code>ouvert</code> (booléen)</li>
+                        <li>Constructeur qui prend nom, propriétaire et nombre de places</li>
+                        <li>Méthode <code>ouvrir()</code> qui affiche "Le maquis [nom] ouvre !"</li>
+                        <li>Méthode <code>fermer()</code> qui affiche "On ferme ! Merci les clients"</li>
+                        <li>Méthode <code>afficherInfos()</code> qui affiche toutes les infos</li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-classe-2')"
+                            style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+                    <div id="solution-classe-2" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">public class</span> <span class="class-name">Maquis</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> nom;
+    <span class="keyword">private</span> <span class="class-name">String</span> proprietaire;
+    <span class="keyword">private int</span> nbPlaces;
+    <span class="keyword">private boolean</span> ouvert;
+
+    <span class="keyword">public</span> <span class="method">Maquis</span>(<span class="class-name">String</span> nom, <span class="class-name">String</span> proprietaire, <span class="keyword">int</span> nbPlaces) {
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.proprietaire = proprietaire;
+        <span class="keyword">this</span>.nbPlaces = nbPlaces;
+        <span class="keyword">this</span>.ouvert = <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">public void</span> <span class="method">ouvrir</span>() {
+        <span class="keyword">if</span> (!ouvert) {
+            ouvert = <span class="keyword">true</span>;
+            <span class="class-name">System</span>.out.println(<span class="string">"🍽️ Le maquis "</span> + nom + <span class="string">" ouvre !"</span>);
+        } <span class="keyword">else</span> {
+            <span class="class-name">System</span>.out.println(<span class="string">"On est déjà ouvert oh !"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">fermer</span>() {
+        <span class="keyword">if</span> (ouvert) {
+            ouvert = <span class="keyword">false</span>;
+            <span class="class-name">System</span>.out.println(<span class="string">"🚪 On ferme ! Merci les clients !"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherInfos</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"=== Maquis "</span> + nom + <span class="string">" ==="</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"Propriétaire : "</span> + proprietaire);
+        <span class="class-name">System</span>.out.println(<span class="string">"Places : "</span> + nbPlaces);
+        <span class="class-name">System</span>.out.println(<span class="string">"Statut : "</span> + (ouvert ? <span class="string">"Ouvert 🟢"</span> : <span class="string">"Fermé 🔴"</span>));
+    }
+}
+
+<span class="comment">// Test</span>
+<span class="keyword">public class</span> <span class="class-name">TestMaquis</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Maquis</span> maquis = <span class="keyword">new</span> <span class="class-name">Maquis</span>(<span class="string">"Chez Tantie Adjoua"</span>, <span class="string">"Adjoua"</span>, 20);
+        maquis.afficherInfos();
+        maquis.ouvrir();
+        maquis.afficherInfos();
+        maquis.fermer();
+    }
+}
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE 3 : Créer une classe Etudiant</h4>
+                    <p>Crée une classe <code>Etudiant</code> pour gérer les étudiants d'une école :</p>
+                    <ol>
+                        <li>Attributs : <code>nom</code>, <code>prenom</code>, <code>matricule</code>, <code>age</code>, <code>moyenne</code></li>
+                        <li>Constructeur avec tous les paramètres</li>
+                        <li>Méthode <code>sePresenter()</code> qui affiche "Je m'appelle [nom] [prenom], matricule [matricule]"</li>
+                        <li>Méthode <code>estAdmis()</code> qui retourne true si moyenne >= 10</li>
+                        <li>Méthode <code>mentionObtenue()</code> qui retourne : "Passable" (10-12), "Assez Bien" (12-14), "Bien" (14-16), "Très Bien" (16+)</li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-classe-3')"
+                            style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+                    <div id="solution-classe-3" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">public class</span> <span class="class-name">Etudiant</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> nom;
+    <span class="keyword">private</span> <span class="class-name">String</span> prenom;
+    <span class="keyword">private</span> <span class="class-name">String</span> matricule;
+    <span class="keyword">private int</span> age;
+    <span class="keyword">private double</span> moyenne;
+
+    <span class="keyword">public</span> <span class="method">Etudiant</span>(<span class="class-name">String</span> nom, <span class="class-name">String</span> prenom, <span class="class-name">String</span> matricule, <span class="keyword">int</span> age, <span class="keyword">double</span> moyenne) {
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.prenom = prenom;
+        <span class="keyword">this</span>.matricule = matricule;
+        <span class="keyword">this</span>.age = age;
+        <span class="keyword">this</span>.moyenne = moyenne;
+    }
+
+    <span class="keyword">public void</span> <span class="method">sePresenter</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"👋 Je m'appelle "</span> + nom + <span class="string">" "</span> + prenom +
+                         <span class="string">", matricule "</span> + matricule);
+    }
+
+    <span class="keyword">public boolean</span> <span class="method">estAdmis</span>() {
+        <span class="keyword">return</span> moyenne >= 10;
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">mentionObtenue</span>() {
+        <span class="keyword">if</span> (moyenne < 10) {
+            <span class="keyword">return</span> <span class="string">"❌ Non admis"</span>;
+        } <span class="keyword">else if</span> (moyenne < 12) {
+            <span class="keyword">return</span> <span class="string">"Passable"</span>;
+        } <span class="keyword">else if</span> (moyenne < 14) {
+            <span class="keyword">return</span> <span class="string">"Assez Bien"</span>;
+        } <span class="keyword">else if</span> (moyenne < 16) {
+            <span class="keyword">return</span> <span class="string">"Bien"</span>;
+        } <span class="keyword">else</span> {
+            <span class="keyword">return</span> <span class="string">"Très Bien 🏆"</span>;
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherResultat</span>() {
+        sePresenter();
+        <span class="class-name">System</span>.out.println(<span class="string">"Moyenne : "</span> + moyenne + <span class="string">"/20"</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"Résultat : "</span> + (estAdmis() ? <span class="string">"✅ Admis"</span> : <span class="string">"❌ Non admis"</span>));
+        <span class="keyword">if</span> (estAdmis()) {
+            <span class="class-name">System</span>.out.println(<span class="string">"Mention : "</span> + mentionObtenue());
+        }
+    }
+}
+
+<span class="comment">// Test</span>
+<span class="keyword">public class</span> <span class="class-name">TestEtudiant</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Etudiant</span> kouassi = <span class="keyword">new</span> <span class="class-name">Etudiant</span>(<span class="string">"Kouassi"</span>, <span class="string">"Yao"</span>, <span class="string">"ETU2025"</span>, 20, 15.5);
+        kouassi.afficherResultat();
+    }
+}
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE 4 : Créer une classe Telephone</h4>
+                    <p>Crée une classe <code>Telephone</code> pour gérer un téléphone portable :</p>
+                    <ol>
+                        <li>Attributs : <code>marque</code>, <code>modele</code>, <code>batterie</code> (0-100), <code>allume</code> (booléen)</li>
+                        <li>Méthode <code>allumer()</code> qui consomme 5% de batterie</li>
+                        <li>Méthode <code>eteindre()</code></li>
+                        <li>Méthode <code>appeler(int duree)</code> qui consomme 1% par minute d'appel</li>
+                        <li>Méthode <code>recharger(int pourcentage)</code> qui recharge la batterie (max 100)</li>
+                        <li>Méthode <code>afficherStatut()</code> qui affiche toutes les infos</li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-classe-4')"
+                            style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+                    <div id="solution-classe-4" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">public class</span> <span class="class-name">Telephone</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> marque;
+    <span class="keyword">private</span> <span class="class-name">String</span> modele;
+    <span class="keyword">private int</span> batterie;
+    <span class="keyword">private boolean</span> allume;
+
+    <span class="keyword">public</span> <span class="method">Telephone</span>(<span class="class-name">String</span> marque, <span class="class-name">String</span> modele) {
+        <span class="keyword">this</span>.marque = marque;
+        <span class="keyword">this</span>.modele = modele;
+        <span class="keyword">this</span>.batterie = 100;
+        <span class="keyword">this</span>.allume = <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">public void</span> <span class="method">allumer</span>() {
+        <span class="keyword">if</span> (!allume) {
+            <span class="keyword">if</span> (batterie >= 5) {
+                allume = <span class="keyword">true</span>;
+                batterie -= 5;
+                <span class="class-name">System</span>.out.println(<span class="string">"📱 Téléphone allumé ! Batterie : "</span> + batterie + <span class="string">"%"</span>);
+            } <span class="keyword">else</span> {
+                <span class="class-name">System</span>.out.println(<span class="string">"❌ Batterie trop faible ! Recharge d'abord"</span>);
+            }
+        } <span class="keyword">else</span> {
+            <span class="class-name">System</span>.out.println(<span class="string">"Le téléphone est déjà allumé !"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">eteindre</span>() {
+        <span class="keyword">if</span> (allume) {
+            allume = <span class="keyword">false</span>;
+            <span class="class-name">System</span>.out.println(<span class="string">"📴 Téléphone éteint"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">appeler</span>(<span class="keyword">int</span> duree) {
+        <span class="keyword">if</span> (!allume) {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Allume d'abord le téléphone !"</span>);
+            <span class="keyword">return</span>;
+        }
+
+        <span class="keyword">int</span> consommation = duree;
+        <span class="keyword">if</span> (batterie >= consommation) {
+            batterie -= consommation;
+            <span class="class-name">System</span>.out.println(<span class="string">"📞 Appel de "</span> + duree + <span class="string">" minutes. Batterie : "</span> + batterie + <span class="string">"%"</span>);
+        } <span class="keyword">else</span> {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Batterie insuffisante pour "</span> + duree + <span class="string">" min d'appel"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">recharger</span>(<span class="keyword">int</span> pourcentage) {
+        batterie = <span class="class-name">Math</span>.min(100, batterie + pourcentage);
+        <span class="class-name">System</span>.out.println(<span class="string">"🔋 Rechargé ! Batterie : "</span> + batterie + <span class="string">"%"</span>);
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherStatut</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"\n=== "</span> + marque + <span class="string">" "</span> + modele + <span class="string">" ==="</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"État : "</span> + (allume ? <span class="string">"📱 Allumé"</span> : <span class="string">"📴 Éteint"</span>));
+        <span class="class-name">System</span>.out.println(<span class="string">"Batterie : "</span> + batterie + <span class="string">"%"</span>);
+    }
+}
+
+<span class="comment">// Test</span>
+<span class="keyword">public class</span> <span class="class-name">TestTelephone</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Telephone</span> samsung = <span class="keyword">new</span> <span class="class-name">Telephone</span>(<span class="string">"Samsung"</span>, <span class="string">"Galaxy A15"</span>);
+        samsung.afficherStatut();
+        samsung.allumer();
+        samsung.appeler(20);
+        samsung.appeler(50);
+        samsung.recharger(30);
+        samsung.afficherStatut();
+    }
+}
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE 5 : Créer une classe CompteBancaire</h4>
+                    <p>Crée une classe <code>CompteBancaire</code> pour gérer un compte en banque :</p>
+                    <ol>
+                        <li>Attributs : <code>numeroCompte</code>, <code>titulaire</code>, <code>solde</code></li>
+                        <li>Méthode <code>deposer(int montant)</code> qui ajoute de l'argent</li>
+                        <li>Méthode <code>retirer(int montant)</code> qui retire de l'argent (si solde suffisant)</li>
+                        <li>Méthode <code>afficherSolde()</code></li>
+                        <li>Méthode <code>transferer(CompteBancaire destinataire, int montant)</code></li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-classe-5')"
+                            style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+                    <div id="solution-classe-5" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">public class</span> <span class="class-name">CompteBancaire</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> numeroCompte;
+    <span class="keyword">private</span> <span class="class-name">String</span> titulaire;
+    <span class="keyword">private int</span> solde;
+
+    <span class="keyword">public</span> <span class="method">CompteBancaire</span>(<span class="class-name">String</span> numeroCompte, <span class="class-name">String</span> titulaire, <span class="keyword">int</span> soldeInitial) {
+        <span class="keyword">this</span>.numeroCompte = numeroCompte;
+        <span class="keyword">this</span>.titulaire = titulaire;
+        <span class="keyword">this</span>.solde = soldeInitial;
+    }
+
+    <span class="keyword">public void</span> <span class="method">deposer</span>(<span class="keyword">int</span> montant) {
+        <span class="keyword">if</span> (montant > 0) {
+            solde += montant;
+            <span class="class-name">System</span>.out.println(<span class="string">"✅ Dépôt de "</span> + montant + <span class="string">"F réussi. Nouveau solde : "</span> + solde + <span class="string">"F"</span>);
+        } <span class="keyword">else</span> {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Montant invalide"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">retirer</span>(<span class="keyword">int</span> montant) {
+        <span class="keyword">if</span> (montant <= 0) {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Montant invalide"</span>);
+        } <span class="keyword">else if</span> (montant > solde) {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Solde insuffisant ! Tu as seulement "</span> + solde + <span class="string">"F"</span>);
+        } <span class="keyword">else</span> {
+            solde -= montant;
+            <span class="class-name">System</span>.out.println(<span class="string">"✅ Retrait de "</span> + montant + <span class="string">"F réussi. Nouveau solde : "</span> + solde + <span class="string">"F"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherSolde</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"💰 Compte "</span> + numeroCompte + <span class="string">" - "</span> + titulaire + <span class="string">" : "</span> + solde + <span class="string">"F"</span>);
+    }
+
+    <span class="keyword">public void</span> <span class="method">transferer</span>(<span class="class-name">CompteBancaire</span> destinataire, <span class="keyword">int</span> montant) {
+        <span class="keyword">if</span> (montant <= solde) {
+            <span class="keyword">this</span>.solde -= montant;
+            destinataire.solde += montant;
+            <span class="class-name">System</span>.out.println(<span class="string">"💸 Transfert de "</span> + montant + <span class="string">"F vers "</span> +
+                             destinataire.titulaire + <span class="string">" réussi !"</span>);
+        } <span class="keyword">else</span> {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Solde insuffisant pour ce transfert"</span>);
+        }
+    }
+}
+
+<span class="comment">// Test</span>
+<span class="keyword">public class</span> <span class="class-name">TestBanque</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">CompteBancaire</span> compte1 = <span class="keyword">new</span> <span class="class-name">CompteBancaire</span>(<span class="string">"CI001"</span>, <span class="string">"Kouassi"</span>, 50000);
+        <span class="class-name">CompteBancaire</span> compte2 = <span class="keyword">new</span> <span class="class-name">CompteBancaire</span>(<span class="string">"CI002"</span>, <span class="string">"Aya"</span>, 30000);
+
+        compte1.afficherSolde();
+        compte2.afficherSolde();
+
+        compte1.transferer(compte2, 15000);
+
+        compte1.afficherSolde();
+        compte2.afficherSolde();
+    }
+}
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE 6 : Créer une classe Produit</h4>
+                    <p>Crée une classe <code>Produit</code> pour un magasin :</p>
+                    <ol>
+                        <li>Attributs : <code>nom</code>, <code>prix</code>, <code>quantiteStock</code>, <code>categorie</code></li>
+                        <li>Méthode <code>vendre(int quantite)</code> qui diminue le stock</li>
+                        <li>Méthode <code>reapprovisionner(int quantite)</code> qui augmente le stock</li>
+                        <li>Méthode <code>appliquerPromotion(int pourcentageRemise)</code> qui réduit le prix</li>
+                        <li>Méthode <code>estEnRupture()</code> qui retourne true si stock == 0</li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-classe-6')"
+                            style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+                    <div id="solution-classe-6" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">public class</span> <span class="class-name">Produit</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> nom;
+    <span class="keyword">private int</span> prix;
+    <span class="keyword">private int</span> quantiteStock;
+    <span class="keyword">private</span> <span class="class-name">String</span> categorie;
+
+    <span class="keyword">public</span> <span class="method">Produit</span>(<span class="class-name">String</span> nom, <span class="keyword">int</span> prix, <span class="keyword">int</span> quantiteStock, <span class="class-name">String</span> categorie) {
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.prix = prix;
+        <span class="keyword">this</span>.quantiteStock = quantiteStock;
+        <span class="keyword">this</span>.categorie = categorie;
+    }
+
+    <span class="keyword">public void</span> <span class="method">vendre</span>(<span class="keyword">int</span> quantite) {
+        <span class="keyword">if</span> (quantite <= 0) {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Quantité invalide"</span>);
+        } <span class="keyword">else if</span> (quantite > quantiteStock) {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Stock insuffisant ! Il reste "</span> + quantiteStock + <span class="string">" "</span> + nom);
+        } <span class="keyword">else</span> {
+            quantiteStock -= quantite;
+            <span class="keyword">int</span> montantTotal = prix * quantite;
+            <span class="class-name">System</span>.out.println(<span class="string">"✅ Vente de "</span> + quantite + <span class="string">" "</span> + nom + <span class="string">" pour "</span> +
+                             montantTotal + <span class="string">"F. Stock restant : "</span> + quantiteStock);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">reapprovisionner</span>(<span class="keyword">int</span> quantite) {
+        <span class="keyword">if</span> (quantite > 0) {
+            quantiteStock += quantite;
+            <span class="class-name">System</span>.out.println(<span class="string">"📦 Réapprovisionné de "</span> + quantite + <span class="string">" "</span> + nom +
+                             <span class="string">". Nouveau stock : "</span> + quantiteStock);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">appliquerPromotion</span>(<span class="keyword">int</span> pourcentageRemise) {
+        <span class="keyword">if</span> (pourcentageRemise > 0 && pourcentageRemise <= 100) {
+            <span class="keyword">int</span> ancienPrix = prix;
+            prix = prix - (prix * pourcentageRemise / 100);
+            <span class="class-name">System</span>.out.println(<span class="string">"🎉 PROMO "</span> + pourcentageRemise + <span class="string">"% sur "</span> + nom +
+                             <span class="string">" ! "</span> + ancienPrix + <span class="string">"F → "</span> + prix + <span class="string">"F"</span>);
+        }
+    }
+
+    <span class="keyword">public boolean</span> <span class="method">estEnRupture</span>() {
+        <span class="keyword">return</span> quantiteStock == 0;
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherInfos</span>() {
+        <span class="class-name">String</span> statut = estEnRupture() ? <span class="string">"🔴 RUPTURE"</span> : <span class="string">"🟢 Disponible"</span>;
+        <span class="class-name">System</span>.out.println(nom + <span class="string">" ("</span> + categorie + <span class="string">") - "</span> + prix + <span class="string">"F - Stock: "</span> +
+                         quantiteStock + <span class="string">" - "</span> + statut);
+    }
+}
+
+<span class="comment">// Test</span>
+<span class="keyword">public class</span> <span class="class-name">TestProduit</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Produit</span> riz = <span class="keyword">new</span> <span class="class-name">Produit</span>(<span class="string">"Riz Basmati"</span>, 5000, 50, <span class="string">"Alimentation"</span>);
+        riz.afficherInfos();
+        riz.appliquerPromotion(20);
+        riz.vendre(10);
+        riz.reapprovisionner(25);
+        riz.afficherInfos();
+    }
+}
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE 7 : Créer une classe Voiture</h4>
+                    <p>Crée une classe <code>Voiture</code> pour gérer une voiture :</p>
+                    <ol>
+                        <li>Attributs : <code>marque</code>, <code>modele</code>, <code>annee</code>, <code>kilometrage</code>, <code>reservoir</code> (en litres), <code>enMarche</code></li>
+                        <li>Méthode <code>demarrer()</code> qui consomme 1L d'essence</li>
+                        <li>Méthode <code>rouler(int km)</code> qui consomme 1L tous les 10 km et augmente le kilométrage</li>
+                        <li>Méthode <code>faireLeP lein()</code> qui remplit le réservoir à 50L</li>
+                        <li>Méthode <code>afficherEtat()</code></li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-classe-7')"
+                            style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+                    <div id="solution-classe-7" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">public class</span> <span class="class-name">Voiture</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> marque;
+    <span class="keyword">private</span> <span class="class-name">String</span> modele;
+    <span class="keyword">private int</span> annee;
+    <span class="keyword">private int</span> kilometrage;
+    <span class="keyword">private double</span> reservoir;
+    <span class="keyword">private boolean</span> enMarche;
+    <span class="keyword">private static final double</span> CAPACITE_MAX = 50.0;
+
+    <span class="keyword">public</span> <span class="method">Voiture</span>(<span class="class-name">String</span> marque, <span class="class-name">String</span> modele, <span class="keyword">int</span> annee) {
+        <span class="keyword">this</span>.marque = marque;
+        <span class="keyword">this</span>.modele = modele;
+        <span class="keyword">this</span>.annee = annee;
+        <span class="keyword">this</span>.kilometrage = 0;
+        <span class="keyword">this</span>.reservoir = CAPACITE_MAX;
+        <span class="keyword">this</span>.enMarche = <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">public void</span> <span class="method">demarrer</span>() {
+        <span class="keyword">if</span> (enMarche) {
+            <span class="class-name">System</span>.out.println(<span class="string">"La voiture roule déjà !"</span>);
+            <span class="keyword">return</span>;
+        }
+        <span class="keyword">if</span> (reservoir >= 1) {
+            enMarche = <span class="keyword">true</span>;
+            reservoir -= 1;
+            <span class="class-name">System</span>.out.println(<span class="string">"🚗 Vrooom ! "</span> + marque + <span class="string">" "</span> + modele + <span class="string">" démarre !"</span>);
+        } <span class="keyword">else</span> {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Pas assez d'essence ! Fais le plein"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">rouler</span>(<span class="keyword">int</span> km) {
+        <span class="keyword">if</span> (!enMarche) {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Démarre la voiture d'abord !"</span>);
+            <span class="keyword">return</span>;
+        }
+
+        <span class="keyword">double</span> essenceNecessaire = km / 10.0;
+        <span class="keyword">if</span> (reservoir >= essenceNecessaire) {
+            kilometrage += km;
+            reservoir -= essenceNecessaire;
+            <span class="class-name">System</span>.out.println(<span class="string">"🛣️ Roulé "</span> + km + <span class="string">"km. Kilométrage total : "</span> +
+                             kilometrage + <span class="string">"km. Essence restante : "</span> +
+                             <span class="class-name">String</span>.format(<span class="string">"%.1f"</span>, reservoir) + <span class="string">"L"</span>);
+        } <span class="keyword">else</span> {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Pas assez d'essence ! Il te faut "</span> + essenceNecessaire + <span class="string">"L"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">faireLeP lein</span>() {
+        <span class="keyword">double</span> quantite = CAPACITE_MAX - reservoir;
+        reservoir = CAPACITE_MAX;
+        <span class="class-name">System</span>.out.println(<span class="string">"⛽ Plein fait ! Ajouté "</span> + <span class="class-name">String</span>.format(<span class="string">"%.1f"</span>, quantite) + <span class="string">"L"</span>);
+    }
+
+    <span class="keyword">public void</span> <span class="method">arreter</span>() {
+        enMarche = <span class="keyword">false</span>;
+        <span class="class-name">System</span>.out.println(<span class="string">"🛑 Voiture arrêtée"</span>);
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherEtat</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"\n=== "</span> + marque + <span class="string">" "</span> + modele + <span class="string">" ("</span> + annee + <span class="string">") ==="</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"Kilométrage : "</span> + kilometrage + <span class="string">"km"</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"Essence : "</span> + <span class="class-name">String</span>.format(<span class="string">"%.1f"</span>, reservoir) + <span class="string">"L / "</span> + CAPACITE_MAX + <span class="string">"L"</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"État : "</span> + (enMarche ? <span class="string">"🚗 En marche"</span> : <span class="string">"🛑 Arrêté"</span>));
+    }
+}
+
+<span class="comment">// Test</span>
+<span class="keyword">public class</span> <span class="class-name">TestVoiture</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Voiture</span> toyota = <span class="keyword">new</span> <span class="class-name">Voiture</span>(<span class="string">"Toyota"</span>, <span class="string">"Corolla"</span>, 2020);
+        toyota.afficherEtat();
+        toyota.demarrer();
+        toyota.rouler(150);
+        toyota.rouler(200);
+        toyota.rouler(150);
+        toyota.faireLeP lein();
+        toyota.afficherEtat();
+    }
+}
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box example">
+                    <h4>💡 Points importants sur les classes</h4>
+                    <ul>
+                        <li><strong>Encapsulation</strong> : Utilise toujours <code>private</code> pour les attributs</li>
+                        <li><strong>Constructeur</strong> : Initialise tous les attributs importants</li>
+                        <li><strong>Validation</strong> : Vérifie toujours les paramètres avant de les utiliser</li>
+                        <li><strong>Retour</strong> : Les méthodes peuvent retourner des valeurs avec <code>return</code></li>
+                        <li><strong>this</strong> : Utilise <code>this</code> pour différencier attribut et paramètre</li>
+                    </ul>
                 </div>
             </section>
 
@@ -1842,102 +2376,258 @@ meilleur.ifPresent(e -&gt; System.out.println(<span class="string">"Meilleur: "<
 
                 <div class="info-box why">
                     <h4>🎯 Évalue ton niveau</h4>
-                    <p>Ces quiz te permettent de vérifier que tu as bien compris les concepts. Réponds honnêtement et vérifie les réponses après !</p>
+                    <p>Ces quiz te permettent de vérifier que tu as bien compris les concepts. Sélectionne une réponse puis clique sur "Vérifier" !</p>
                 </div>
 
+                <!-- Quiz 1 : Les Classes -->
                 <div class="exercise">
-                    <h3>Quiz 1 : Les Classes</h3>
-                    <p><strong>Question 1 :</strong> Quel mot-clé utilise-t-on pour créer une nouvelle instance de classe ?</p>
-                    <ul style="list-style-type: none;">
-                        <li>A) <code>create</code></li>
-                        <li>B) <code>new</code> ✅</li>
-                        <li>C) <code>instance</code></li>
-                        <li>D) <code>make</code></li>
-                    </ul>
+                    <h3>🎯 Quiz 1 : Les Classes</h3>
 
-                    <p><strong>Question 2 :</strong> Que signifie le mot-clé <code>private</code> devant un attribut ?</p>
-                    <ul style="list-style-type: none;">
-                        <li>A) L'attribut est accessible depuis n'importe où</li>
-                        <li>B) L'attribut est accessible seulement dans la classe ✅</li>
-                        <li>C) L'attribut ne peut jamais être modifié</li>
-                        <li>D) L'attribut est accessible dans toutes les classes du package</li>
-                    </ul>
+                    <!-- Question 1 -->
+                    <div id="qcm1-1" class="qcm-question">
+                        <p><strong>Question 1 :</strong> Quel mot-clé utilise-t-on pour créer une nouvelle instance de classe ?</p>
+                        <div class="qcm-options">
+                            <div class="qcm-option" onclick="selectOption('qcm1-1', 0)">
+                                A) <code>create</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm1-1', 1)">
+                                B) <code>new</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm1-1', 2)">
+                                C) <code>instance</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm1-1', 3)">
+                                D) <code>make</code>
+                            </div>
+                        </div>
+                        <button class="btn-verify" onclick="verifyAnswer('qcm1-1', 1)" disabled>Vérifier</button>
+                        <button class="btn-secondary" onclick="resetQCM('qcm1-1')" style="margin-left: 10px;">Réessayer</button>
+                        <div class="qcm-feedback">
+                            <p><strong>✅ Correct !</strong> Le mot-clé <code>new</code> permet de créer une nouvelle instance d'une classe.</p>
+                            <p><strong>❌ Incorrect !</strong> La bonne réponse est <code>new</code>. C'est le mot-clé standard en Java pour instancier des objets.</p>
+                        </div>
+                    </div>
 
-                    <p><strong>Question 3 :</strong> Qu'est-ce qu'un constructeur ?</p>
-                    <ul style="list-style-type: none;">
-                        <li>A) Une méthode qui détruit un objet</li>
-                        <li>B) Une méthode spéciale appelée lors de la création d'un objet ✅</li>
-                        <li>C) Une méthode qui retourne toujours <code>void</code></li>
-                        <li>D) Une variable de classe</li>
-                    </ul>
+                    <!-- Question 2 -->
+                    <div id="qcm1-2" class="qcm-question">
+                        <p><strong>Question 2 :</strong> Que signifie le mot-clé <code>private</code> devant un attribut ?</p>
+                        <div class="qcm-options">
+                            <div class="qcm-option" onclick="selectOption('qcm1-2', 0)">
+                                A) L'attribut est accessible depuis n'importe où
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm1-2', 1)">
+                                B) L'attribut est accessible seulement dans la classe
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm1-2', 2)">
+                                C) L'attribut ne peut jamais être modifié
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm1-2', 3)">
+                                D) L'attribut est accessible dans toutes les classes du package
+                            </div>
+                        </div>
+                        <button class="btn-verify" onclick="verifyAnswer('qcm1-2', 1)" disabled>Vérifier</button>
+                        <button class="btn-secondary" onclick="resetQCM('qcm1-2')" style="margin-left: 10px;">Réessayer</button>
+                        <div class="qcm-feedback">
+                            <p><strong>✅ Correct !</strong> <code>private</code> limite l'accès à l'attribut uniquement à l'intérieur de la classe.</p>
+                            <p><strong>❌ Incorrect !</strong> Un attribut <code>private</code> n'est accessible que dans sa propre classe, c'est l'encapsulation.</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div id="qcm1-3" class="qcm-question">
+                        <p><strong>Question 3 :</strong> Qu'est-ce qu'un constructeur ?</p>
+                        <div class="qcm-options">
+                            <div class="qcm-option" onclick="selectOption('qcm1-3', 0)">
+                                A) Une méthode qui détruit un objet
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm1-3', 1)">
+                                B) Une méthode spéciale appelée lors de la création d'un objet
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm1-3', 2)">
+                                C) Une méthode qui retourne toujours <code>void</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm1-3', 3)">
+                                D) Une variable de classe
+                            </div>
+                        </div>
+                        <button class="btn-verify" onclick="verifyAnswer('qcm1-3', 1)" disabled>Vérifier</button>
+                        <button class="btn-secondary" onclick="resetQCM('qcm1-3')" style="margin-left: 10px;">Réessayer</button>
+                        <div class="qcm-feedback">
+                            <p><strong>✅ Correct !</strong> Le constructeur est une méthode spéciale qui initialise un objet lors de sa création.</p>
+                            <p><strong>❌ Incorrect !</strong> Un constructeur est appelé automatiquement quand tu crées un objet avec <code>new</code>.</p>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- Quiz 2 : Les Collections -->
                 <div class="exercise">
-                    <h3>Quiz 2 : Les Collections</h3>
-                    <p><strong>Question 1 :</strong> Quelle collection utiliser pour garantir l'unicité des éléments ?</p>
-                    <ul style="list-style-type: none;">
-                        <li>A) <code>ArrayList</code></li>
-                        <li>B) <code>LinkedList</code></li>
-                        <li>C) <code>HashSet</code> ✅</li>
-                        <li>D) <code>HashMap</code></li>
-                    </ul>
+                    <h3>🎯 Quiz 2 : Les Collections</h3>
 
-                    <p><strong>Question 2 :</strong> Dans une <code>Map</code>, comment s'appellent les deux éléments d'une paire ?</p>
-                    <ul style="list-style-type: none;">
-                        <li>A) Nom et Valeur</li>
-                        <li>B) Clé et Valeur ✅</li>
-                        <li>C) Index et Élément</li>
-                        <li>D) Premier et Second</li>
-                    </ul>
+                    <!-- Question 1 -->
+                    <div id="qcm2-1" class="qcm-question">
+                        <p><strong>Question 1 :</strong> Quelle collection utiliser pour garantir l'unicité des éléments ?</p>
+                        <div class="qcm-options">
+                            <div class="qcm-option" onclick="selectOption('qcm2-1', 0)">
+                                A) <code>ArrayList</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm2-1', 1)">
+                                B) <code>LinkedList</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm2-1', 2)">
+                                C) <code>HashSet</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm2-1', 3)">
+                                D) <code>HashMap</code>
+                            </div>
+                        </div>
+                        <button class="btn-verify" onclick="verifyAnswer('qcm2-1', 2)" disabled>Vérifier</button>
+                        <button class="btn-secondary" onclick="resetQCM('qcm2-1')" style="margin-left: 10px;">Réessayer</button>
+                        <div class="qcm-feedback">
+                            <p><strong>✅ Correct !</strong> <code>HashSet</code> ne peut contenir que des éléments uniques, les doublons sont automatiquement ignorés.</p>
+                            <p><strong>❌ Incorrect !</strong> La bonne réponse est <code>HashSet</code>. Les <code>List</code> acceptent les doublons.</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div id="qcm2-2" class="qcm-question">
+                        <p><strong>Question 2 :</strong> Dans une <code>Map</code>, comment s'appellent les deux éléments d'une paire ?</p>
+                        <div class="qcm-options">
+                            <div class="qcm-option" onclick="selectOption('qcm2-2', 0)">
+                                A) Nom et Valeur
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm2-2', 1)">
+                                B) Clé et Valeur
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm2-2', 2)">
+                                C) Index et Élément
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm2-2', 3)">
+                                D) Premier et Second
+                            </div>
+                        </div>
+                        <button class="btn-verify" onclick="verifyAnswer('qcm2-2', 1)" disabled>Vérifier</button>
+                        <button class="btn-secondary" onclick="resetQCM('qcm2-2')" style="margin-left: 10px;">Réessayer</button>
+                        <div class="qcm-feedback">
+                            <p><strong>✅ Correct !</strong> Une <code>Map</code> associe des <strong>clés</strong> (uniques) à des <strong>valeurs</strong>.</p>
+                            <p><strong>❌ Incorrect !</strong> Dans une <code>Map</code>, on parle de <strong>clé (key)</strong> et <strong>valeur (value)</strong>.</p>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- Quiz 3 : Les Streams -->
                 <div class="exercise">
-                    <h3>Quiz 3 : Les Streams</h3>
-                    <p><strong>Question 1 :</strong> Que fait l'opération <code>filter()</code> sur un stream ?</p>
-                    <ul style="list-style-type: none;">
-                        <li>A) Transforme chaque élément</li>
-                        <li>B) Garde seulement les éléments qui respectent une condition ✅</li>
-                        <li>C) Trie les éléments</li>
-                        <li>D) Compte les éléments</li>
-                    </ul>
+                    <h3>🎯 Quiz 3 : Les Streams</h3>
 
-                    <p><strong>Question 2 :</strong> Quelle opération est <strong>terminale</strong> (finalise le stream) ?</p>
-                    <ul style="list-style-type: none;">
-                        <li>A) <code>filter()</code></li>
-                        <li>B) <code>map()</code></li>
-                        <li>C) <code>sorted()</code></li>
-                        <li>D) <code>collect()</code> ✅</li>
-                    </ul>
+                    <!-- Question 1 -->
+                    <div id="qcm3-1" class="qcm-question">
+                        <p><strong>Question 1 :</strong> Que fait l'opération <code>filter()</code> sur un stream ?</p>
+                        <div class="qcm-options">
+                            <div class="qcm-option" onclick="selectOption('qcm3-1', 0)">
+                                A) Transforme chaque élément
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm3-1', 1)">
+                                B) Garde seulement les éléments qui respectent une condition
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm3-1', 2)">
+                                C) Trie les éléments
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm3-1', 3)">
+                                D) Compte les éléments
+                            </div>
+                        </div>
+                        <button class="btn-verify" onclick="verifyAnswer('qcm3-1', 1)" disabled>Vérifier</button>
+                        <button class="btn-secondary" onclick="resetQCM('qcm3-1')" style="margin-left: 10px;">Réessayer</button>
+                        <div class="qcm-feedback">
+                            <p><strong>✅ Correct !</strong> <code>filter()</code> filtre les éléments selon une condition (Predicate).</p>
+                            <p><strong>❌ Incorrect !</strong> <code>filter()</code> sélectionne uniquement les éléments qui respectent une condition.</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div id="qcm3-2" class="qcm-question">
+                        <p><strong>Question 2 :</strong> Quelle opération est <strong>terminale</strong> (finalise le stream) ?</p>
+                        <div class="qcm-options">
+                            <div class="qcm-option" onclick="selectOption('qcm3-2', 0)">
+                                A) <code>filter()</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm3-2', 1)">
+                                B) <code>map()</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm3-2', 2)">
+                                C) <code>sorted()</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm3-2', 3)">
+                                D) <code>collect()</code>
+                            </div>
+                        </div>
+                        <button class="btn-verify" onclick="verifyAnswer('qcm3-2', 3)" disabled>Vérifier</button>
+                        <button class="btn-secondary" onclick="resetQCM('qcm3-2')" style="margin-left: 10px;">Réessayer</button>
+                        <div class="qcm-feedback">
+                            <p><strong>✅ Correct !</strong> <code>collect()</code> est une opération terminale qui transforme le stream en collection.</p>
+                            <p><strong>❌ Incorrect !</strong> Les autres sont intermédiaires. <code>collect()</code> finalise le traitement et retourne un résultat.</p>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- Quiz 4 : Les Exceptions -->
                 <div class="exercise">
-                    <h3>Quiz 4 : Les Exceptions</h3>
-                    <p><strong>Question 1 :</strong> Quel bloc s'exécute TOUJOURS, qu'il y ait erreur ou pas ?</p>
-                    <ul style="list-style-type: none;">
-                        <li>A) <code>try</code></li>
-                        <li>B) <code>catch</code></li>
-                        <li>C) <code>finally</code> ✅</li>
-                        <li>D) <code>throw</code></li>
-                    </ul>
+                    <h3>🎯 Quiz 4 : Les Exceptions</h3>
 
-                    <p><strong>Question 2 :</strong> Quelle est la différence entre <code>throw</code> et <code>throws</code> ?</p>
-                    <ul style="list-style-type: none;">
-                        <li>A) Aucune différence</li>
-                        <li>B) <code>throw</code> lance une exception, <code>throws</code> déclare qu'une méthode peut en lancer ✅</li>
-                        <li>C) <code>throws</code> lance une exception, <code>throw</code> déclare</li>
-                        <li>D) <code>throw</code> est pour les erreurs, <code>throws</code> pour les warnings</li>
-                    </ul>
+                    <!-- Question 1 -->
+                    <div id="qcm4-1" class="qcm-question">
+                        <p><strong>Question 1 :</strong> Quel bloc s'exécute TOUJOURS, qu'il y ait erreur ou pas ?</p>
+                        <div class="qcm-options">
+                            <div class="qcm-option" onclick="selectOption('qcm4-1', 0)">
+                                A) <code>try</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm4-1', 1)">
+                                B) <code>catch</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm4-1', 2)">
+                                C) <code>finally</code>
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm4-1', 3)">
+                                D) <code>throw</code>
+                            </div>
+                        </div>
+                        <button class="btn-verify" onclick="verifyAnswer('qcm4-1', 2)" disabled>Vérifier</button>
+                        <button class="btn-secondary" onclick="resetQCM('qcm4-1')" style="margin-left: 10px;">Réessayer</button>
+                        <div class="qcm-feedback">
+                            <p><strong>✅ Correct !</strong> Le bloc <code>finally</code> s'exécute toujours, que l'exception soit levée ou non.</p>
+                            <p><strong>❌ Incorrect !</strong> C'est <code>finally</code> qui est garanti de s'exécuter, peu importe ce qui se passe.</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div id="qcm4-2" class="qcm-question">
+                        <p><strong>Question 2 :</strong> Quelle est la différence entre <code>throw</code> et <code>throws</code> ?</p>
+                        <div class="qcm-options">
+                            <div class="qcm-option" onclick="selectOption('qcm4-2', 0)">
+                                A) Aucune différence
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm4-2', 1)">
+                                B) <code>throw</code> lance une exception, <code>throws</code> déclare qu'une méthode peut en lancer
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm4-2', 2)">
+                                C) <code>throws</code> lance une exception, <code>throw</code> déclare
+                            </div>
+                            <div class="qcm-option" onclick="selectOption('qcm4-2', 3)">
+                                D) <code>throw</code> est pour les erreurs, <code>throws</code> pour les warnings
+                            </div>
+                        </div>
+                        <button class="btn-verify" onclick="verifyAnswer('qcm4-2', 1)" disabled>Vérifier</button>
+                        <button class="btn-secondary" onclick="resetQCM('qcm4-2')" style="margin-left: 10px;">Réessayer</button>
+                        <div class="qcm-feedback">
+                            <p><strong>✅ Correct !</strong> <code>throw</code> lance effectivement une exception, tandis que <code>throws</code> déclare dans la signature.</p>
+                            <p><strong>❌ Incorrect !</strong> <code>throw</code> lance, <code>throws</code> déclare dans la signature de méthode.</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="info-box example">
-                    <h4>📊 Score</h4>
-                    <p>Compte tes bonnes réponses (marquées ✅) :</p>
-                    <ul>
-                        <li><strong>10-12</strong> : Excellent ! 🏆 Tu maîtrises Java !</li>
-                        <li><strong>7-9</strong> : Très bien ! 👍 Révise les points faibles</li>
-                        <li><strong>4-6</strong> : Pas mal 😊 Continue à pratiquer</li>
-                        <li><strong>0-3</strong> : Relis les sections concernées 📚</li>
-                    </ul>
+                    <h4>🎉 Félicitations !</h4>
+                    <p>Tu as terminé tous les quiz ! Ces questions interactives t'ont permis de tester tes connaissances en temps réel. N'hésite pas à les refaire jusqu'à ce que tu maîtrises tous les concepts !</p>
+                    <p><strong>💡 Conseil :</strong> Si tu as raté des questions, retourne dans les sections correspondantes pour réviser.</p>
                 </div>
             </section>
 
