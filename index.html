@@ -1455,12 +1455,279 @@
                 </div>
 
                 <div class="exercise">
-                    <h4>🏋️‍♂️ EXERCICE 4 : Liste de clients maquis</h4>
-                    <p>Crée un programme qui gère une liste de clients dans un maquis avec leurs commandes.</p>
-                    <button class="btn btn-success" onclick="toggleSolution('solution4')">Voir la solution</button>
-                    <div id="solution4" class="solution">
-                       <p>La solution de cet exercice sera ajoutée prochainement.</p>
+                    <h4>🏋️‍♂️ EXERCICE : Gestionnaire de Tâches</h4>
+                    <p>Crée un gestionnaire de tâches quotidiennes (to-do list) :</p>
+                    <ol>
+                        <li>Classe <code>Tache</code> avec attributs : description, priorité (1-5), terminée (booléen)</li>
+                        <li>Classe <code>GestionnaireTaches</code> avec une List de tâches</li>
+                        <li>Méthodes : ajouter, supprimer, marquer terminée, afficher par priorité</li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-list-1')"
+                            style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+                    <div id="solution-list-1" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">class</span> <span class="class-name">Tache</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> description;
+    <span class="keyword">private int</span> priorite;
+    <span class="keyword">private boolean</span> terminee;
+
+    <span class="keyword">public</span> <span class="method">Tache</span>(<span class="class-name">String</span> description, <span class="keyword">int</span> priorite) {
+        <span class="keyword">this</span>.description = description;
+        <span class="keyword">this</span>.priorite = priorite;
+        <span class="keyword">this</span>.terminee = <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">public void</span> <span class="method">marquerTerminee</span>() {
+        terminee = <span class="keyword">true</span>;
+    }
+
+    <span class="keyword">public int</span> <span class="method">getPriorite</span>() { <span class="keyword">return</span> priorite; }
+    <span class="keyword">public boolean</span> <span class="method">estTerminee</span>() { <span class="keyword">return</span> terminee; }
+
+    <span class="keyword">@Override
+    public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+        <span class="class-name">String</span> statut = terminee ? <span class="string">"✅"</span> : <span class="string">"⏳"</span>;
+        <span class="keyword">return</span> statut + <span class="string">" [P"</span> + priorite + <span class="string">"] "</span> + description;
+    }
+}
+
+<span class="keyword">public class</span> <span class="class-name">GestionnaireTaches</span> {
+    <span class="keyword">private</span> <span class="class-name">List</span>&lt;<span class="class-name">Tache</span>&gt; taches;
+
+    <span class="keyword">public</span> <span class="method">GestionnaireTaches</span>() {
+        taches = <span class="keyword">new</span> <span class="class-name">ArrayList</span>&lt;&gt;();
+    }
+
+    <span class="keyword">public void</span> <span class="method">ajouterTache</span>(<span class="class-name">String</span> description, <span class="keyword">int</span> priorite) {
+        taches.add(<span class="keyword">new</span> <span class="class-name">Tache</span>(description, priorite));
+        <span class="class-name">System</span>.out.println(<span class="string">"✓ Tâche ajoutée : "</span> + description);
+    }
+
+    <span class="keyword">public void</span> <span class="method">marquerTerminee</span>(<span class="keyword">int</span> index) {
+        <span class="keyword">if</span> (index >= 0 && index < taches.size()) {
+            taches.get(index).marquerTerminee();
+            <span class="class-name">System</span>.out.println(<span class="string">"✅ Tâche terminée !"</span>);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherTaches</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"\n📋 === MES TÂCHES DU JOUR ==="</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i < taches.size(); i++) {
+            <span class="class-name">System</span>.out.println((i + 1) + <span class="string">". "</span> + taches.get(i));
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherParPriorite</span>(<span class="keyword">int</span> prioriteMin) {
+        <span class="class-name">System</span>.out.println(<span class="string">"\n🔥 Tâches priorité >= "</span> + prioriteMin + <span class="string">" :"</span>);
+        <span class="keyword">for</span> (<span class="class-name">Tache</span> t : taches) {
+            <span class="keyword">if</span> (t.getPriorite() >= prioriteMin && !t.estTerminee()) {
+                <span class="class-name">System</span>.out.println(<span class="string">"  "</span> + t);
+            }
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">supprimerTerminees</span>() {
+        taches.removeIf(<span class="class-name">Tache</span>::estTerminee);
+        <span class="class-name">System</span>.out.println(<span class="string">"🗑️ Tâches terminées supprimées"</span>);
+    }
+}
+
+<span class="comment">// Test</span>
+<span class="keyword">public class</span> <span class="class-name">TestTaches</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">GestionnaireTaches</span> todo = <span class="keyword">new</span> <span class="class-name">GestionnaireTaches</span>();
+
+        todo.ajouterTache(<span class="string">"Acheter attiéké au marché"</span>, 5);
+        todo.ajouterTache(<span class="string">"Finir le projet Java"</span>, 5);
+        todo.ajouterTache(<span class="string">"Appeler tante Adjoua"</span>, 2);
+        todo.ajouterTache(<span class="string">"Regarder match ASEC"</span>, 1);
+
+        todo.afficherTaches();
+        todo.afficherParPriorite(4);
+
+        todo.marquerTerminee(0);
+        todo.afficherTaches();
+
+        todo.supprimerTerminees();
+        todo.afficherTaches();
+    }
+}
+</code></pre>
+                        </div>
                     </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE : Classement Équipes de Football</h4>
+                    <p>Crée un système de classement pour le championnat ivoirien :</p>
+                    <ol>
+                        <li>Classe <code>Equipe</code> avec : nom, matchs joués, points, buts marqués, buts encaissés</li>
+                        <li>Classe <code>Championnat</code> avec une List d'équipes</li>
+                        <li>Méthodes : ajouter équipe, enregistrer résultat match, afficher classement trié</li>
+                        <li>Trier par points (puis différence de buts si égalité)</li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-list-2')"
+                            style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+                    <div id="solution-list-2" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">class</span> <span class="class-name">Equipe</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> nom;
+    <span class="keyword">private int</span> matchsJoues;
+    <span class="keyword">private int</span> points;
+    <span class="keyword">private int</span> butsMarques;
+    <span class="keyword">private int</span> butsEncaisses;
+
+    <span class="keyword">public</span> <span class="method">Equipe</span>(<span class="class-name">String</span> nom) {
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.matchsJoues = 0;
+        <span class="keyword">this</span>.points = 0;
+        <span class="keyword">this</span>.butsMarques = 0;
+        <span class="keyword">this</span>.butsEncaisses = 0;
+    }
+
+    <span class="keyword">public void</span> <span class="method">victoire</span>(<span class="keyword">int</span> butsMarques, <span class="keyword">int</span> butsEncaisses) {
+        matchsJoues++;
+        points += 3;
+        <span class="keyword">this</span>.butsMarques += butsMarques;
+        <span class="keyword">this</span>.butsEncaisses += butsEncaisses;
+    }
+
+    <span class="keyword">public void</span> <span class="method">match Nul</span>(<span class="keyword">int</span> buts) {
+        matchsJoues++;
+        points += 1;
+        <span class="keyword">this</span>.butsMarques += buts;
+        <span class="keyword">this</span>.butsEncaisses += buts;
+    }
+
+    <span class="keyword">public void</span> <span class="method">defaite</span>(<span class="keyword">int</span> butsMarques, <span class="keyword">int</span> butsEncaisses) {
+        matchsJoues++;
+        <span class="keyword">this</span>.butsMarques += butsMarques;
+        <span class="keyword">this</span>.butsEncaisses += butsEncaisses;
+    }
+
+    <span class="keyword">public int</span> <span class="method">getDifferenceButs</span>() {
+        <span class="keyword">return</span> butsMarques - butsEncaisses;
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getNom</span>() { <span class="keyword">return</span> nom; }
+    <span class="keyword">public int</span> <span class="method">getPoints</span>() { <span class="keyword">return</span> points; }
+    <span class="keyword">public int</span> <span class="method">getMatchsJoues</span>() { <span class="keyword">return</span> matchsJoues; }
+
+    <span class="keyword">@Override
+    public</span> <span class="class-name">String</span> <span class="method">toString</span>() {
+        <span class="keyword">return</span> <span class="class-name">String</span>.format(<span class="string">"%-15s | MJ: %2d | Pts: %2d | Buts: %d-%d | Diff: %+d"</span>,
+                nom, matchsJoues, points, butsMarques, butsEncaisses, getDifferenceButs());
+    }
+}
+
+<span class="keyword">public class</span> <span class="class-name">Championnat</span> {
+    <span class="keyword">private</span> <span class="class-name">List</span>&lt;<span class="class-name">Equipe</span>&gt; equipes;
+
+    <span class="keyword">public</span> <span class="method">Championnat</span>() {
+        equipes = <span class="keyword">new</span> <span class="class-name">ArrayList</span>&lt;&gt;();
+    }
+
+    <span class="keyword">public void</span> <span class="method">ajouterEquipe</span>(<span class="class-name">String</span> nom) {
+        equipes.add(<span class="keyword">new</span> <span class="class-name">Equipe</span>(nom));
+        <span class="class-name">System</span>.out.println(<span class="string">"⚽ "</span> + nom + <span class="string">" rejoint le championnat !"</span>);
+    }
+
+    <span class="keyword">public</span> <span class="class-name">Equipe</span> <span class="method">trouverEquipe</span>(<span class="class-name">String</span> nom) {
+        <span class="keyword">for</span> (<span class="class-name">Equipe</span> e : equipes) {
+            <span class="keyword">if</span> (e.getNom().equalsIgnoreCase(nom)) {
+                <span class="keyword">return</span> e;
+            }
+        }
+        <span class="keyword">return null</span>;
+    }
+
+    <span class="keyword">public void</span> <span class="method">enregistrerMatch</span>(<span class="class-name">String</span> equipe1, <span class="keyword">int</span> score1,
+                                      <span class="class-name">String</span> equipe2, <span class="keyword">int</span> score2) {
+        <span class="class-name">Equipe</span> e1 = trouverEquipe(equipe1);
+        <span class="class-name">Equipe</span> e2 = trouverEquipe(equipe2);
+
+        <span class="keyword">if</span> (e1 == <span class="keyword">null</span> || e2 == <span class="keyword">null</span>) {
+            <span class="class-name">System</span>.out.println(<span class="string">"❌ Équipe introuvable"</span>);
+            <span class="keyword">return</span>;
+        }
+
+        <span class="class-name">System</span>.out.println(<span class="string">"\n⚽ MATCH : "</span> + equipe1 + <span class="string">" "</span> + score1 + <span class="string">"-"</span> + score2 + <span class="string">" "</span> + equipe2);
+
+        <span class="keyword">if</span> (score1 > score2) {
+            e1.victoire(score1, score2);
+            e2.defaite(score2, score1);
+        } <span class="keyword">else if</span> (score1 < score2) {
+            e1.defaite(score1, score2);
+            e2.victoire(score2, score1);
+        } <span class="keyword">else</span> {
+            e1.matchNul(score1);
+            e2.matchNul(score2);
+        }
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficherClassement</span>() {
+        <span class="comment">// Trier par points puis différence de buts</span>
+        equipes.sort((e1, e2) -&gt; {
+            <span class="keyword">if</span> (e2.getPoints() != e1.getPoints()) {
+                <span class="keyword">return</span> e2.getPoints() - e1.getPoints();
+            }
+            <span class="keyword">return</span> e2.getDifferenceButs() - e1.getDifferenceButs();
+        });
+
+        <span class="class-name">System</span>.out.println(<span class="string">"\n🏆 === CLASSEMENT CHAMPIONNAT IVOIRE ==="</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"="</span>.repeat(70));
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i < equipes.size(); i++) {
+            <span class="class-name">String</span> position = (i + 1) + <span class="string">". "</span>;
+            <span class="keyword">if</span> (i == 0) position = <span class="string">"🥇 "</span>;
+            <span class="keyword">else if</span> (i == 1) position = <span class="string">"🥈 "</span>;
+            <span class="keyword">else if</span> (i == 2) position = <span class="string">"🥉 "</span>;
+
+            <span class="class-name">System</span>.out.println(position + equipes.get(i));
+        }
+    }
+}
+
+<span class="comment">// Test - Championnat simplifié</span>
+<span class="keyword">public class</span> <span class="class-name">TestChampionnat</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Championnat</span> ligue = <span class="keyword">new</span> <span class="class-name">Championnat</span>();
+
+        ligue.ajouterEquipe(<span class="string">"ASEC Mimosas"</span>);
+        ligue.ajouterEquipe(<span class="string">"Africa Sports"</span>);
+        ligue.ajouterEquipe(<span class="string">"Racing d'Abidjan"</span>);
+        ligue.ajouterEquipe(<span class="string">"Stella d'Adjamé"</span>);
+
+        <span class="comment">// Simulation quelques matchs</span>
+        ligue.enregistrerMatch(<span class="string">"ASEC Mimosas"</span>, 3, <span class="string">"Africa Sports"</span>, 1);
+        ligue.enregistrerMatch(<span class="string">"Racing d'Abidjan"</span>, 2, <span class="string">"Stella d'Adjamé"</span>, 2);
+        ligue.enregistrerMatch(<span class="string">"ASEC Mimosas"</span>, 2, <span class="string">"Racing d'Abidjan"</span>, 0);
+        ligue.enregistrerMatch(<span class="string">"Africa Sports"</span>, 3, <span class="string">"Stella d'Adjamé"</span>, 0);
+
+        ligue.afficherClassement();
+    }
+}
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box example">
+                    <h4>💡 Points clés sur les List</h4>
+                    <ul>
+                        <li><strong>ArrayList</strong> : Rapide pour lire, accès par index</li>
+                        <li><strong>LinkedList</strong> : Rapide pour ajouter/supprimer au début/fin</li>
+                        <li><strong>add(), remove(), get(), size()</strong> : Méthodes principales</li>
+                        <li><strong>sort(), Collections</strong> : Pour trier les listes</li>
+                        <li><strong>removeIf()</strong> : Supprimer selon une condition</li>
+                    </ul>
                 </div>
             </section>
 
