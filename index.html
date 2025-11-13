@@ -811,12 +811,12 @@
 <span class="keyword">public class</span> <span class="class-name">VendeurAttieke</span> <span class="keyword">implements</span> <span class="class-name">Vendeur</span> {
     <span class="keyword">private</span> <span class="class-name">String</span> nom;
     <span class="keyword">private int</span> prixKilo = 500;
-    
+
     <span class="keyword">@Override
     public void</span> <span class="method">saluer</span>() {
         System.out.println(<span class="string">"Bonsoir frère ! Tante "</span> + nom + <span class="string">" est là !"</span>);
     }
-    
+
     <span class="keyword">@Override
     public int</span> <span class="method">calculerPrix</span>(<span class="keyword">int</span> quantite) {
         <span class="keyword">return</span> prixKilo * quantite;
@@ -824,6 +824,355 @@
 }</code></pre>
                         </div>
                     </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE : Interface Payable</h4>
+                    <p>Crée une interface <code>Payable</code> et implémente-la dans 3 classes différentes :</p>
+                    <ol>
+                        <li>Interface <code>Payable</code> avec méthodes : <code>calculerMontant()</code>, <code>effectuerPaiement()</code>, <code>genererRecu()</code></li>
+                        <li>Classe <code>FactureElectricite</code> qui implémente Payable</li>
+                        <li>Classe <code>CourseGbaka</code> qui implémente Payable</li>
+                        <li>Classe <code>AchatMaquis</code> qui implémente Payable</li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-interface-1')"
+                            style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+                    <div id="solution-interface-1" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">public interface</span> <span class="class-name">Payable</span> {
+    <span class="keyword">int</span> <span class="method">calculerMontant</span>();
+    <span class="keyword">void</span> <span class="method">effectuerPaiement</span>();
+    <span class="keyword">void</span> <span class="method">genererRecu</span>();
+}
+
+<span class="keyword">public class</span> <span class="class-name">FactureElectricite</span> <span class="keyword">implements</span> <span class="class-name">Payable</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> numeroFacture;
+    <span class="keyword">private int</span> consommationKwh;
+    <span class="keyword">private static final int</span> PRIX_KWH = 85;
+
+    <span class="keyword">public</span> <span class="method">FactureElectricite</span>(<span class="class-name">String</span> numeroFacture, <span class="keyword">int</span> consommationKwh) {
+        <span class="keyword">this</span>.numeroFacture = numeroFacture;
+        <span class="keyword">this</span>.consommationKwh = consommationKwh;
+    }
+
+    <span class="keyword">@Override
+    public int</span> <span class="method">calculerMontant</span>() {
+        <span class="keyword">return</span> consommationKwh * PRIX_KWH;
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">effectuerPaiement</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"💡 Paiement de "</span> + calculerMontant() + <span class="string">"F pour la CIE"</span>);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">genererRecu</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"\n=== REÇU CIE ==="</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"Facture : "</span> + numeroFacture);
+        <span class="class-name">System</span>.out.println(<span class="string">"Consommation : "</span> + consommationKwh + <span class="string">" kWh"</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"Montant : "</span> + calculerMontant() + <span class="string">"F"</span>);
+    }
+}
+
+<span class="keyword">public class</span> <span class="class-name">CourseGbaka</span> <span class="keyword">implements</span> <span class="class-name">Payable</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> depart;
+    <span class="keyword">private</span> <span class="class-name">String</span> arrivee;
+    <span class="keyword">private int</span> prix;
+
+    <span class="keyword">public</span> <span class="method">CourseGbaka</span>(<span class="class-name">String</span> depart, <span class="class-name">String</span> arrivee, <span class="keyword">int</span> prix) {
+        <span class="keyword">this</span>.depart = depart;
+        <span class="keyword">this</span>.arrivee = arrivee;
+        <span class="keyword">this</span>.prix = prix;
+    }
+
+    <span class="keyword">@Override
+    public int</span> <span class="method">calculerMontant</span>() {
+        <span class="keyword">return</span> prix;
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">effectuerPaiement</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"🚐 Paiement de "</span> + prix + <span class="string">"F pour le gbaka"</span>);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">genererRecu</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"\n=== TICKET GBAKA ==="</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"Trajet : "</span> + depart + <span class="string">" → "</span> + arrivee);
+        <span class="class-name">System</span>.out.println(<span class="string">"Prix : "</span> + prix + <span class="string">"F"</span>);
+    }
+}
+
+<span class="keyword">public class</span> <span class="class-name">AchatMaquis</span> <span class="keyword">implements</span> <span class="class-name">Payable</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> nomMaquis;
+    <span class="keyword">private</span> <span class="class-name">List</span>&lt;<span class="class-name">String</span>&gt; plats;
+    <span class="keyword">private int</span> montantTotal;
+
+    <span class="keyword">public</span> <span class="method">AchatMaquis</span>(<span class="class-name">String</span> nomMaquis) {
+        <span class="keyword">this</span>.nomMaquis = nomMaquis;
+        <span class="keyword">this</span>.plats = <span class="keyword">new</span> <span class="class-name">ArrayList</span>&lt;&gt;();
+        <span class="keyword">this</span>.montantTotal = 0;
+    }
+
+    <span class="keyword">public void</span> <span class="method">ajouterPlat</span>(<span class="class-name">String</span> plat, <span class="keyword">int</span> prix) {
+        plats.add(plat);
+        montantTotal += prix;
+    }
+
+    <span class="keyword">@Override
+    public int</span> <span class="method">calculerMontant</span>() {
+        <span class="keyword">return</span> montantTotal;
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">effectuerPaiement</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"🍽️ Paiement de "</span> + montantTotal + <span class="string">"F au "</span> + nomMaquis);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">genererRecu</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"\n=== FACTURE "</span> + nomMaquis.toUpperCase() + <span class="string">" ==="</span>);
+        <span class="keyword">for</span> (<span class="class-name">String</span> plat : plats) {
+            <span class="class-name">System</span>.out.println(<span class="string">"- "</span> + plat);
+        }
+        <span class="class-name">System</span>.out.println(<span class="string">"TOTAL : "</span> + montantTotal + <span class="string">"F"</span>);
+        <span class="class-name">System</span>.out.println(<span class="string">"Merci et à bientôt ! 🙏"</span>);
+    }
+}
+
+<span class="comment">// Test</span>
+<span class="keyword">public class</span> <span class="class-name">TestPayable</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">List</span>&lt;<span class="class-name">Payable</span>&gt; paiements = <span class="keyword">new</span> <span class="class-name">ArrayList</span>&lt;&gt;();
+
+        <span class="class-name">FactureElectricite</span> facture = <span class="keyword">new</span> <span class="class-name">FactureElectricite</span>(<span class="string">"CIE-2025"</span>, 250);
+        <span class="class-name">CourseGbaka</span> course = <span class="keyword">new</span> <span class="class-name">CourseGbaka</span>(<span class="string">"Adjamé"</span>, <span class="string">"Yopougon"</span>, 250);
+
+        <span class="class-name">AchatMaquis</span> achat = <span class="keyword">new</span> <span class="class-name">AchatMaquis</span>(<span class="string">"Chez Tantie"</span>);
+        achat.ajouterPlat(<span class="string">"Attiéké poisson"</span>, 1500);
+        achat.ajouterPlat(<span class="string">"Alloco"</span>, 500);
+
+        paiements.add(facture);
+        paiements.add(course);
+        paiements.add(achat);
+
+        <span class="comment">// Traiter tous les paiements de la même manière</span>
+        <span class="keyword">for</span> (<span class="class-name">Payable</span> p : paiements) {
+            p.effectuerPaiement();
+            p.genererRecu();
+        }
+    }
+}
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE : Interface Joueur</h4>
+                    <p>Crée une interface <code>Joueur</code> pour un jeu de football :</p>
+                    <ol>
+                        <li>Interface <code>Joueur</code> avec : <code>sePresenter()</code>, <code>jouer()</code>, <code>marquerBut()</code>, <code>afficherStatistiques()</code></li>
+                        <li>Classe <code>Attaquant</code> qui implémente Joueur (spécialisé en buts)</li>
+                        <li>Classe <code>Gardien</code> qui implémente Joueur (spécialisé en arrêts)</li>
+                        <li>Classe <code>Defenseur</code> qui implémente Joueur (spécialisé en tacles)</li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="toggleSolution('solution-interface-2')"
+                            style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        👁️ Voir Solution
+                    </button>
+                    <div id="solution-interface-2" class="solution-content">
+                        <h5>💡 Solution complète :</h5>
+                        <p><strong>💡 Concept clé :</strong> L'interface <code>Joueur</code> définit le comportement commun, mais chaque classe implémente différemment selon sa spécialité !</p>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                            <pre><code><span class="keyword">public interface</span> <span class="class-name">Joueur</span> {
+    <span class="keyword">void</span> <span class="method">sePresenter</span>();
+    <span class="keyword">void</span> <span class="method">jouer</span>();
+    <span class="keyword">void</span> <span class="method">marquerBut</span>();
+    <span class="keyword">void</span> <span class="method">afficherStatistiques</span>();
+}
+
+<span class="keyword">public class</span> <span class="class-name">Attaquant</span> <span class="keyword">implements</span> <span class="class-name">Joueur</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> nom;
+    <span class="keyword">private int</span> numero;
+    <span class="keyword">private int</span> buts;
+    <span class="keyword">private int</span> passes;
+
+    <span class="keyword">public</span> <span class="method">Attaquant</span>(<span class="class-name">String</span> nom, <span class="keyword">int</span> numero) {
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.numero = numero;
+        <span class="keyword">this</span>.buts = 0;
+        <span class="keyword">this</span>.passes = 0;
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">sePresenter</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"⚽ Attaquant #"</span> + numero + <span class="string">" - "</span> + nom);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">jouer</span>() {
+        <span class="class-name">System</span>.out.println(nom + <span class="string">" court vers le but adverse !"</span>);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">marquerBut</span>() {
+        buts++;
+        <span class="class-name">System</span>.out.println(<span class="string">"🎯 BUUUUUT DE "</span> + nom + <span class="string">" ! Son "</span> + buts + <span class="string">"e but !"</span>);
+    }
+
+    <span class="keyword">public void</span> <span class="method">fairePasse</span>() {
+        passes++;
+        <span class="class-name">System</span>.out.println(<span class="string">"👟 Belle passe décisive de "</span> + nom);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">afficherStatistiques</span>() {
+        <span class="class-name">System</span>.out.println(nom + <span class="string">" - Buts: "</span> + buts + <span class="string">", Passes: "</span> + passes);
+    }
+}
+
+<span class="keyword">public class</span> <span class="class-name">Gardien</span> <span class="keyword">implements</span> <span class="class-name">Joueur</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> nom;
+    <span class="keyword">private int</span> numero;
+    <span class="keyword">private int</span> arrets;
+    <span class="keyword">private int</span> butsEncaisses;
+
+    <span class="keyword">public</span> <span class="method">Gardien</span>(<span class="class-name">String</span> nom, <span class="keyword">int</span> numero) {
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.numero = numero;
+        <span class="keyword">this</span>.arrets = 0;
+        <span class="keyword">this</span>.butsEncaisses = 0;
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">sePresenter</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"🧤 Gardien #"</span> + numero + <span class="string">" - "</span> + nom);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">jouer</span>() {
+        <span class="class-name">System</span>.out.println(nom + <span class="string">" protège ses buts !"</span>);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">marquerBut</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"😅 Les gardiens ne marquent pas souvent... Mais "</span> + nom + <span class="string">" peut rêver !"</span>);
+    }
+
+    <span class="keyword">public void</span> <span class="method">arreterTir</span>() {
+        arrets++;
+        <span class="class-name">System</span>.out.println(<span class="string">"🛡️ ARRÊT INCROYABLE de "</span> + nom + <span class="string">" !"</span>);
+    }
+
+    <span class="keyword">public void</span> <span class="method">encaisserBut</span>() {
+        butsEncaisses++;
+        <span class="class-name">System</span>.out.println(<span class="string">"😢 "</span> + nom + <span class="string">" encaisse un but..."</span>);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">afficherStatistiques</span>() {
+        <span class="class-name">System</span>.out.println(nom + <span class="string">" - Arrêts: "</span> + arrets + <span class="string">", Buts encaissés: "</span> + butsEncaisses);
+    }
+}
+
+<span class="keyword">public class</span> <span class="class-name">Defenseur</span> <span class="keyword">implements</span> <span class="class-name">Joueur</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> nom;
+    <span class="keyword">private int</span> numero;
+    <span class="keyword">private int</span> tacles;
+    <span class="keyword">private int</span> interceptions;
+
+    <span class="keyword">public</span> <span class="method">Defenseur</span>(<span class="class-name">String</span> nom, <span class="keyword">int</span> numero) {
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.numero = numero;
+        <span class="keyword">this</span>.tacles = 0;
+        <span class="keyword">this</span>.interceptions = 0;
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">sePresenter</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"🛡️ Défenseur #"</span> + numero + <span class="string">" - "</span> + nom);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">jouer</span>() {
+        <span class="class-name">System</span>.out.println(nom + <span class="string">" surveille les attaquants adverses !"</span>);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">marquerBut</span>() {
+        <span class="class-name">System</span>.out.println(<span class="string">"🎉 BUT RARE ! Le défenseur "</span> + nom + <span class="string">" marque !"</span>);
+    }
+
+    <span class="keyword">public void</span> <span class="method">tacler</span>() {
+        tacles++;
+        <span class="class-name">System</span>.out.println(<span class="string">"💪 Tacle parfait de "</span> + nom + <span class="string">" !"</span>);
+    }
+
+    <span class="keyword">public void</span> <span class="method">intercepter</span>() {
+        interceptions++;
+        <span class="class-name">System</span>.out.println(<span class="string">"👀 "</span> + nom + <span class="string">" intercepte la balle !"</span>);
+    }
+
+    <span class="keyword">@Override
+    public void</span> <span class="method">afficherStatistiques</span>() {
+        <span class="class-name">System</span>.out.println(nom + <span class="string">" - Tacles: "</span> + tacles + <span class="string">", Interceptions: "</span> + interceptions);
+    }
+}
+
+<span class="comment">// Test - Match ASEC vs Africa</span>
+<span class="keyword">public class</span> <span class="class-name">TestMatch</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">Attaquant</span> didier = <span class="keyword">new</span> <span class="class-name">Attaquant</span>(<span class="string">"Didier"</span>, 11);
+        <span class="class-name">Gardien</span> sylvain = <span class="keyword">new</span> <span class="class-name">Gardien</span>(<span class="string">"Sylvain"</span>, 1);
+        <span class="class-name">Defenseur</span> kolo = <span class="keyword">new</span> <span class="class-name">Defenseur</span>(<span class="string">"Kolo"</span>, 4);
+
+        <span class="comment">// Présentation</span>
+        didier.sePresenter();
+        sylvain.sePresenter();
+        kolo.sePresenter();
+
+        <span class="comment">// Match simulation</span>
+        <span class="class-name">System</span>.out.println(<span class="string">"\n⚽ === DÉBUT DU MATCH === ⚽\n"</span>);
+
+        didier.jouer();
+        kolo.tacler();
+        didier.jouer();
+        didier.marquerBut();
+        didier.fairePasse();
+
+        sylvain.jouer();
+        sylvain.arreterTir();
+        sylvain.arreterTir();
+
+        kolo.intercepter();
+        kolo.tacler();
+
+        <span class="class-name">System</span>.out.println(<span class="string">"\n📊 === STATISTIQUES === 📊\n"</span>);
+        didier.afficherStatistiques();
+        sylvain.afficherStatistiques();
+        kolo.afficherStatistiques();
+    }
+}
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box example">
+                    <h4>💡 Points importants sur les interfaces</h4>
+                    <ul>
+                        <li><strong>Contrat</strong> : Une interface définit ce qu'une classe DOIT faire</li>
+                        <li><strong>implements</strong> : Mot-clé pour dire qu'une classe respecte le contrat</li>
+                        <li><strong>@Override</strong> : Annotation obligatoire pour les méthodes d'interface</li>
+                        <li><strong>Polymorphisme</strong> : Tu peux traiter différents objets de la même manière</li>
+                        <li><strong>Multiple</strong> : Une classe peut implémenter plusieurs interfaces</li>
+                    </ul>
                 </div>
             </section>
 
