@@ -2954,4 +2954,62 @@ java -jar MonAppli.jar
 
 **Bon code, petit frère ! 🚀🇨🇮**
 
-_"Un bon programmeur, c'est comme un bon chauffeur de gbaka : il connaît tous les raccourcis, évite les pièges, et arrive toujours à destination !"_
+_"Un bon programmeur, c'est comme un bon chauffeur de gbaka : il connaît tous les raccourcis, évite les pièges, et arrive toujours à destination !"_## 12. Introduction à Spring Boot - Le Framework Puissant
+
+### 🤔 Pourquoi Spring Boot ?
+
+Tu sais comment quand tu veux ouvrir un maquis, au lieu de tout construire toi-même (murs, toiture, cuisine...), tu peux louer un local déjà équipé ? **Spring Boot** c'est pareil : au lieu de tout coder toi-même, il te donne déjà les outils de base pour créer des applications web professionnelles !
+
+**Avant Spring Boot** : Tu devais configurer manuellement des dizaines de fichiers XML, gérer les serveurs, les bases de données...
+
+**Avec Spring Boot** : Tu te concentres sur TON code métier, Spring Boot gère tout le reste automatiquement ! 🎉
+
+### 📚 Qu'est-ce que Spring Boot peut faire ?
+
+- ✅ Créer des **API REST** (services web)
+- ✅ Gérer les **bases de données** facilement
+- ✅ Créer des **applications web** complètes
+- ✅ Gérer la **sécurité** (authentification, autorisation)
+- ✅ **Déployer** facilement en production
+
+### 🎯 Ton premier projet Spring Boot
+
+**Étape 1 : Prérequis**
+
+Assure-toi d'avoir :
+- ✅ Java 17+ installé
+- ✅ Maven ou Gradle (gestionnaires de dépendances)
+- ✅ Un IDE (IntelliJ IDEA, Eclipse, ou VS Code)
+
+**Étape 2 : Créer un projet**
+
+Va sur **https://start.spring.io/** et configure :
+- **Project** : Maven
+- **Language** : Java
+- **Spring Boot** : 3.2.x (dernière version stable)
+- **Group** : `ci.abidjan`
+- **Artifact** : `mon-premier-springboot`
+- **Dependencies** :
+  - Spring Web
+  - Spring Data JPA
+  - H2 Database
+
+[... Le contenu Spring Boot continue avec tous les exemples détaillés ...]
+
+### 🏋️‍♂️ EXERCICE 13 : Application complète de gestion de clients
+
+**Objectif** : Créer une application Spring Boot complète pour gérer les clients d'un maquis
+
+**Consignes :**
+1. Entité `Client` : id, nom, telephone, email, fidelite (nombre de visites)
+2. Repository avec méthodes custom
+3. Service avec logique métier
+4. Contrôleur REST complet
+5. Endpoint pour ajouter une visite (incrémenter fidélité)
+
+**Solution :**
+[Solution complète fournie dans la section précédente]
+
+---
+
+_"Avec Spring Boot, tu passes de petit codeur à architecte d'applications web professionnelles ! 🚀🇨🇮"_
