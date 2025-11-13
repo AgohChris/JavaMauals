@@ -29,6 +29,12 @@
                 <li><a href="#" onclick="showSection('optional')" class="nav-link">6. Optional</a></li>
                 <li><a href="#" onclick="showSection('streams')" class="nav-link">7. Streams</a></li>
                 <li><a href="#" onclick="showSection('projet')" class="nav-link">8. Projet Complet</a></li>
+                <li><a href="#" onclick="showSection('exceptions')" class="nav-link">9. Les Exceptions</a></li>
+                <li><a href="#" onclick="showSection('fichiers')" class="nav-link">10. Fichiers I/O</a></li>
+                <li><a href="#" onclick="showSection('enums')" class="nav-link">11. Les Enums</a></li>
+                <li><a href="#" onclick="showSection('qcm')" class="nav-link">📝 QCM & Quiz</a></li>
+                <li><a href="#" onclick="showSection('projets')" class="nav-link">🎓 Mini-Projets</a></li>
+                <li><a href="#" onclick="showSection('astuces')" class="nav-link">💎 Astuces</a></li>
             </ul>
         </nav>
 
@@ -44,13 +50,21 @@
                         <li><a href="#" onclick="showSection('classes')">Les Classes - La Base de Tout</a></li>
                         <li><a href="#" onclick="showSection('interfaces')">Les Interfaces - Le Contrat</a></li>
                         <li><a href="#" onclick="showSection('abstract')">Les Classes Abstraites - Le Modèle</a></li>
-                        <li><a href="#" onclick="showSection('list')">Les Collections List - La Liste de Courses</a>
-                        </li>
+                        <li><a href="#" onclick="showSection('list')">Les Collections List - La Liste de Courses</a></li>
                         <li><a href="#" onclick="showSection('map')">Les Collections Map - Le Répertoire</a></li>
                         <li><a href="#" onclick="showSection('optional')">Optional - Le Filet de Sécurité</a></li>
                         <li><a href="#" onclick="showSection('streams')">Les Streams - La Chaîne de Production</a></li>
                         <li><a href="#" onclick="showSection('projet')">Projet Complet - Gestionnaire de Maquis</a></li>
+                        <li><a href="#" onclick="showSection('exceptions')">Les Exceptions - Gérer les Problèmes</a></li>
+                        <li><a href="#" onclick="showSection('fichiers')">Les Fichiers I/O - Sauvegarder et Lire</a></li>
+                        <li><a href="#" onclick="showSection('enums')">Les Enums - Les Choix Limités</a></li>
                     </ol>
+                    <h4 style="margin-top: 20px;">Bonus :</h4>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li>📝 <a href="#" onclick="showSection('qcm')">QCM & Quiz - Teste tes connaissances</a></li>
+                        <li>🎓 <a href="#" onclick="showSection('projets')">Mini-Projets Supplémentaires</a></li>
+                        <li>💎 <a href="#" onclick="showSection('astuces')">Astuces et Pièges à Éviter</a></li>
+                    </ul>
                 </div>
 
                 <div class="info-box why">
@@ -1324,6 +1338,592 @@ meilleur.ifPresent(e -&gt; System.out.println(<span class="string">"Meilleur: "<
                     <p><strong>Bon code, petit frère ! 🚀🇨🇮</strong></p>
                 </div>
             </section>
+
+            <!-- Exceptions Section -->
+            <section id="exceptions" class="content-section">
+                <h2>9. Les Exceptions - Gérer les Problèmes</h2>
+
+                <div class="info-box why">
+                    <h4>🤔 Pourquoi les exceptions ?</h4>
+                    <p>Tu sais quand tu prends le <strong>gbaka</strong> et que des fois il y a un problème en route (panne, accident, contrôle de police...) ? En Java, les <strong>exceptions</strong> c'est pareil : c'est pour gérer les problèmes qui peuvent arriver pendant l'exécution du programme.</p>
+                </div>
+
+                <h3>📚 Try-Catch - Le filet de sécurité</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="keyword">try</span> {
+    <span class="comment">// Code qui peut causer un problème</span>
+    <span class="keyword">int</span> nombrePlats = argentDisponible / prixPlat;
+    System.out.println(<span class="string">"Tu peux acheter "</span> + nombrePlats + <span class="string">" plats"</span>);
+
+} <span class="keyword">catch</span> (ArithmeticException e) {
+    <span class="comment">// On attrape l'erreur et on gère proprement</span>
+    System.out.println(<span class="string">"❌ Erreur : On ne peut pas diviser par zéro !"</span>);
+
+} <span class="keyword">finally</span> {
+    <span class="comment">// Ce bloc s'exécute TOUJOURS</span>
+    System.out.println(<span class="string">"Merci de votre visite ! 🙏"</span>);
+}
+</code></pre>
+                </div>
+
+                <div class="info-box example">
+                    <h4>🎯 Les types d'exceptions</h4>
+                    <ul>
+                        <li><strong>Checked Exceptions</strong> : Problèmes prévisibles (fichier absent, connexion coupée...)</li>
+                        <li><strong>Unchecked Exceptions</strong> : Erreurs de programmation (division par zéro, NullPointer...)</li>
+                    </ul>
+                </div>
+
+                <h3>🎯 Créer ses propres exceptions</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="keyword">class</span> <span class="class-name">StockInsuffisantException</span> <span class="keyword">extends</span> <span class="class-name">Exception</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> produit;
+    <span class="keyword">private int</span> stockActuel;
+    <span class="keyword">private int</span> quantiteDemandee;
+
+    <span class="keyword">public</span> <span class="method">StockInsuffisantException</span>(<span class="class-name">String</span> produit, <span class="keyword">int</span> stockActuel, <span class="keyword">int</span> quantiteDemandee) {
+        <span class="keyword">super</span>(<span class="string">"Stock insuffisant pour "</span> + produit);
+        <span class="keyword">this</span>.produit = produit;
+        <span class="keyword">this</span>.stockActuel = stockActuel;
+        <span class="keyword">this</span>.quantiteDemandee = quantiteDemandee;
+    }
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getMessageDetaille</span>() {
+        <span class="keyword">return</span> <span class="string">"❌ Désolé, il reste seulement "</span> + stockActuel + <span class="string">" "</span> + produit +
+               <span class="string">" mais tu demandes "</span> + quantiteDemandee;
+    }
+}
+</code></pre>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE 8 : Gestionnaire de transport avec exceptions</h4>
+                    <p>Crée une classe <code>GestionnaireTransport</code> qui gère les réservations de places dans un gbaka.</p>
+                    <p><strong>Consignes :</strong></p>
+                    <ol>
+                        <li>Crée une exception <code>PlacesInsuffisantesException</code></li>
+                        <li>Crée une exception <code>TrajetInvalideException</code></li>
+                        <li>Implémente une méthode <code>reserverPlaces(String trajet, int nbPlaces)</code></li>
+                        <li>Gère proprement les exceptions avec try-catch</li>
+                    </ol>
+                </div>
+
+                <div class="info-box why">
+                    <h4>💡 Bonnes pratiques</h4>
+                    <p><strong>✅ À FAIRE :</strong></p>
+                    <ul>
+                        <li>Utilise des exceptions pour les situations exceptionnelles uniquement</li>
+                        <li>Crée des exceptions personnalisées claires et explicites</li>
+                        <li>Toujours nettoyer les ressources dans le bloc <code>finally</code></li>
+                    </ul>
+                    <p><strong>❌ À ÉVITER :</strong></p>
+                    <ul>
+                        <li>Ne jamais avoir un bloc catch vide</li>
+                        <li>Ne pas utiliser les exceptions pour le contrôle de flux</li>
+                        <li>Ne pas attraper <code>Exception</code> sauf si vraiment nécessaire</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Fichiers I/O Section -->
+            <section id="fichiers" class="content-section">
+                <h2>10. Les Fichiers I/O - Sauvegarder et Lire</h2>
+
+                <div class="info-box why">
+                    <h4>🤔 Pourquoi les fichiers ?</h4>
+                    <p>Tu sais comment tu notes les numéros de tes clients dans un cahier ? En Java, on peut <strong>sauvegarder</strong> des infos dans des fichiers et les <strong>relire</strong> plus tard. C'est indispensable pour que tes données survivent après la fermeture du programme !</p>
+                </div>
+
+                <h3>📚 Écrire dans un fichier</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="keyword">import</span> java.nio.file.*;
+<span class="keyword">import</span> java.io.IOException;
+<span class="keyword">import</span> java.util.*;
+
+<span class="keyword">public class</span> <span class="class-name">EcritureFichier</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="class-name">List</span>&lt;<span class="class-name">String</span>&gt; contacts = <span class="class-name">Arrays</span>.asList(
+            <span class="string">"Kouassi: 07 12 34 56 78"</span>,
+            <span class="string">"Aya: 05 98 76 54 32"</span>,
+            <span class="string">"Adjoua: 01 23 45 67 89"</span>
+        );
+
+        <span class="keyword">try</span> {
+            <span class="class-name">Path</span> fichier = <span class="class-name">Paths</span>.get(<span class="string">"contacts.txt"</span>);
+            <span class="class-name">Files</span>.write(fichier, contacts);
+            System.out.println(<span class="string">"✅ Contacts sauvegardés !"</span>);
+        } <span class="keyword">catch</span> (IOException e) {
+            System.out.println(<span class="string">"❌ Erreur : "</span> + e.getMessage());
+        }
+    }
+}
+</code></pre>
+                </div>
+
+                <h3>📚 Lire un fichier</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="keyword">try</span> {
+    <span class="class-name">Path</span> fichier = <span class="class-name">Paths</span>.get(<span class="string">"contacts.txt"</span>);
+    <span class="class-name">List</span>&lt;<span class="class-name">String</span>&gt; lignes = <span class="class-name">Files</span>.readAllLines(fichier);
+
+    System.out.println(<span class="string">"📞 CONTACTS 📞"</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; lignes.size(); i++) {
+        System.out.println((i + <span class="number">1</span>) + <span class="string">". "</span> + lignes.get(i));
+    }
+} <span class="keyword">catch</span> (IOException e) {
+    System.out.println(<span class="string">"❌ Fichier non trouvé"</span>);
+}
+</code></pre>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE 9 : Carnet de notes persistant</h4>
+                    <p>Crée un programme qui gère un carnet de notes et sauvegarde les données dans un fichier.</p>
+                    <p><strong>Consignes :</strong></p>
+                    <ol>
+                        <li>Classe <code>Eleve</code> avec nom, matricule et liste de notes</li>
+                        <li>Classe <code>CarnetDeNotes</code> qui sauvegarde/charge depuis un fichier</li>
+                        <li>Méthodes : <code>ajouterEleve()</code>, <code>ajouterNote()</code>, <code>afficherBulletin()</code></li>
+                        <li>Format fichier : <code>Matricule|Nom|Note1,Note2,Note3</code></li>
+                    </ol>
+                </div>
+
+                <div class="info-box example">
+                    <h4>🎯 Méthodes utiles</h4>
+                    <ul>
+                        <li><code>Files.write()</code> - Écrire dans un fichier</li>
+                        <li><code>Files.readAllLines()</code> - Lire toutes les lignes</li>
+                        <li><code>Files.exists()</code> - Vérifier si un fichier existe</li>
+                        <li><code>StandardOpenOption.APPEND</code> - Ajouter sans écraser</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Enums Section -->
+            <section id="enums" class="content-section">
+                <h2>11. Les Enums - Les Choix Limités</h2>
+
+                <div class="info-box why">
+                    <h4>🤔 Pourquoi les enums ?</h4>
+                    <p>Tu sais les jours de la semaine ? Il y en a 7, pas plus, pas moins. Ou les catégories de plats dans un maquis : entrée, plat, dessert, boisson. Les <strong>enums</strong> servent à définir un ensemble fixe de constantes.</p>
+                </div>
+
+                <h3>📚 Enum simple</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="keyword">public enum</span> <span class="class-name">JourSemaine</span> {
+    LUNDI, MARDI, MERCREDI, JEUDI, VENDREDI, SAMEDI, DIMANCHE
+}
+
+<span class="comment">// Utilisation</span>
+<span class="class-name">JourSemaine</span> jour = <span class="class-name">JourSemaine</span>.LUNDI;
+
+<span class="keyword">switch</span> (jour) {
+    <span class="keyword">case</span> LUNDI:
+    <span class="keyword">case</span> MARDI:
+    <span class="keyword">case</span> MERCREDI:
+    <span class="keyword">case</span> JEUDI:
+    <span class="keyword">case</span> VENDREDI:
+        System.out.println(<span class="string">"C'est un jour de travail 💼"</span>);
+        <span class="keyword">break</span>;
+    <span class="keyword">case</span> SAMEDI:
+    <span class="keyword">case</span> DIMANCHE:
+        System.out.println(<span class="string">"C'est le weekend ! 🎉"</span>);
+        <span class="keyword">break</span>;
+}
+</code></pre>
+                </div>
+
+                <h3>🎯 Enum avec valeurs et méthodes</h3>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+                    <pre><code><span class="keyword">public enum</span> <span class="class-name">CategoriePlat</span> {
+    ENTREE(<span class="string">"Entrée"</span>, <span class="number">500</span>, <span class="string">"🥗"</span>),
+    PLAT_PRINCIPAL(<span class="string">"Plat principal"</span>, <span class="number">2500</span>, <span class="string">"🍽️"</span>),
+    DESSERT(<span class="string">"Dessert"</span>, <span class="number">1000</span>, <span class="string">"🍰"</span>),
+    BOISSON(<span class="string">"Boisson"</span>, <span class="number">500</span>, <span class="string">"🥤"</span>);
+
+    <span class="keyword">private final</span> <span class="class-name">String</span> libelle;
+    <span class="keyword">private final int</span> prixMoyen;
+    <span class="keyword">private final</span> <span class="class-name">String</span> emoji;
+
+    <span class="method">CategoriePlat</span>(<span class="class-name">String</span> libelle, <span class="keyword">int</span> prixMoyen, <span class="class-name">String</span> emoji) {
+        <span class="keyword">this</span>.libelle = libelle;
+        <span class="keyword">this</span>.prixMoyen = prixMoyen;
+        <span class="keyword">this</span>.emoji = emoji;
+    }
+
+    <span class="keyword">public void</span> <span class="method">afficher</span>() {
+        System.out.println(emoji + <span class="string">" "</span> + libelle + <span class="string">" (≈"</span> + prixMoyen + <span class="string">"F)"</span>);
+    }
+}
+</code></pre>
+                </div>
+
+                <div class="info-box example">
+                    <h4>🎯 Cas d'usage des Enums</h4>
+                    <ul>
+                        <li><strong>Jours de la semaine</strong> : LUNDI, MARDI...</li>
+                        <li><strong>Statuts</strong> : EN_ATTENTE, EN_COURS, TERMINÉ</li>
+                        <li><strong>Niveaux</strong> : FACILE, MOYEN, DIFFICILE</li>
+                        <li><strong>Directions</strong> : NORD, SUD, EST, OUEST</li>
+                    </ul>
+                </div>
+
+                <div class="exercise">
+                    <h4>🏋️‍♂️ EXERCICE 10 : Gestion de niveaux scolaires</h4>
+                    <p>Crée un enum <code>NiveauScolaire</code> avec les niveaux : CP1, CP2, CE1, CE2, CM1, CM2, 6EME, 5EME, 4EME, 3EME.</p>
+                    <p><strong>Consignes :</strong></p>
+                    <ol>
+                        <li>Ajoute un champ <code>cycle</code> (Primaire, Collège)</li>
+                        <li>Ajoute un champ <code>classeSuperieure</code> pour naviguer entre niveaux</li>
+                        <li>Méthode <code>peutRedoubler()</code> qui retourne true sauf pour CM2 et 3EME</li>
+                        <li>Méthode <code>getNiveauSuivant()</code> pour passer au niveau supérieur</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- QCM Section -->
+            <section id="qcm" class="content-section">
+                <h2>📝 QCM - Teste tes connaissances !</h2>
+
+                <div class="info-box why">
+                    <h4>🎯 Évalue ton niveau</h4>
+                    <p>Ces quiz te permettent de vérifier que tu as bien compris les concepts. Réponds honnêtement et vérifie les réponses après !</p>
+                </div>
+
+                <div class="exercise">
+                    <h3>Quiz 1 : Les Classes</h3>
+                    <p><strong>Question 1 :</strong> Quel mot-clé utilise-t-on pour créer une nouvelle instance de classe ?</p>
+                    <ul style="list-style-type: none;">
+                        <li>A) <code>create</code></li>
+                        <li>B) <code>new</code> ✅</li>
+                        <li>C) <code>instance</code></li>
+                        <li>D) <code>make</code></li>
+                    </ul>
+
+                    <p><strong>Question 2 :</strong> Que signifie le mot-clé <code>private</code> devant un attribut ?</p>
+                    <ul style="list-style-type: none;">
+                        <li>A) L'attribut est accessible depuis n'importe où</li>
+                        <li>B) L'attribut est accessible seulement dans la classe ✅</li>
+                        <li>C) L'attribut ne peut jamais être modifié</li>
+                        <li>D) L'attribut est accessible dans toutes les classes du package</li>
+                    </ul>
+
+                    <p><strong>Question 3 :</strong> Qu'est-ce qu'un constructeur ?</p>
+                    <ul style="list-style-type: none;">
+                        <li>A) Une méthode qui détruit un objet</li>
+                        <li>B) Une méthode spéciale appelée lors de la création d'un objet ✅</li>
+                        <li>C) Une méthode qui retourne toujours <code>void</code></li>
+                        <li>D) Une variable de classe</li>
+                    </ul>
+                </div>
+
+                <div class="exercise">
+                    <h3>Quiz 2 : Les Collections</h3>
+                    <p><strong>Question 1 :</strong> Quelle collection utiliser pour garantir l'unicité des éléments ?</p>
+                    <ul style="list-style-type: none;">
+                        <li>A) <code>ArrayList</code></li>
+                        <li>B) <code>LinkedList</code></li>
+                        <li>C) <code>HashSet</code> ✅</li>
+                        <li>D) <code>HashMap</code></li>
+                    </ul>
+
+                    <p><strong>Question 2 :</strong> Dans une <code>Map</code>, comment s'appellent les deux éléments d'une paire ?</p>
+                    <ul style="list-style-type: none;">
+                        <li>A) Nom et Valeur</li>
+                        <li>B) Clé et Valeur ✅</li>
+                        <li>C) Index et Élément</li>
+                        <li>D) Premier et Second</li>
+                    </ul>
+                </div>
+
+                <div class="exercise">
+                    <h3>Quiz 3 : Les Streams</h3>
+                    <p><strong>Question 1 :</strong> Que fait l'opération <code>filter()</code> sur un stream ?</p>
+                    <ul style="list-style-type: none;">
+                        <li>A) Transforme chaque élément</li>
+                        <li>B) Garde seulement les éléments qui respectent une condition ✅</li>
+                        <li>C) Trie les éléments</li>
+                        <li>D) Compte les éléments</li>
+                    </ul>
+
+                    <p><strong>Question 2 :</strong> Quelle opération est <strong>terminale</strong> (finalise le stream) ?</p>
+                    <ul style="list-style-type: none;">
+                        <li>A) <code>filter()</code></li>
+                        <li>B) <code>map()</code></li>
+                        <li>C) <code>sorted()</code></li>
+                        <li>D) <code>collect()</code> ✅</li>
+                    </ul>
+                </div>
+
+                <div class="exercise">
+                    <h3>Quiz 4 : Les Exceptions</h3>
+                    <p><strong>Question 1 :</strong> Quel bloc s'exécute TOUJOURS, qu'il y ait erreur ou pas ?</p>
+                    <ul style="list-style-type: none;">
+                        <li>A) <code>try</code></li>
+                        <li>B) <code>catch</code></li>
+                        <li>C) <code>finally</code> ✅</li>
+                        <li>D) <code>throw</code></li>
+                    </ul>
+
+                    <p><strong>Question 2 :</strong> Quelle est la différence entre <code>throw</code> et <code>throws</code> ?</p>
+                    <ul style="list-style-type: none;">
+                        <li>A) Aucune différence</li>
+                        <li>B) <code>throw</code> lance une exception, <code>throws</code> déclare qu'une méthode peut en lancer ✅</li>
+                        <li>C) <code>throws</code> lance une exception, <code>throw</code> déclare</li>
+                        <li>D) <code>throw</code> est pour les erreurs, <code>throws</code> pour les warnings</li>
+                    </ul>
+                </div>
+
+                <div class="info-box example">
+                    <h4>📊 Score</h4>
+                    <p>Compte tes bonnes réponses (marquées ✅) :</p>
+                    <ul>
+                        <li><strong>10-12</strong> : Excellent ! 🏆 Tu maîtrises Java !</li>
+                        <li><strong>7-9</strong> : Très bien ! 👍 Révise les points faibles</li>
+                        <li><strong>4-6</strong> : Pas mal 😊 Continue à pratiquer</li>
+                        <li><strong>0-3</strong> : Relis les sections concernées 📚</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Mini-Projets Section -->
+            <section id="projets" class="content-section">
+                <h2>🎓 Mini-Projets Supplémentaires</h2>
+
+                <div class="info-box why">
+                    <h4>🚀 Mets en pratique tes connaissances</h4>
+                    <p>Ces projets combinent plusieurs concepts vus dans le manuel. Essaie de les réaliser sans regarder les solutions !</p>
+                </div>
+
+                <div class="exercise">
+                    <h3>Projet 1 : Gestionnaire de Bibliothèque</h3>
+                    <p><strong>Objectif :</strong> Créer un système de gestion de bibliothèque.</p>
+                    <p><strong>Classes nécessaires :</strong></p>
+                    <ul>
+                        <li><code>Livre</code> (titre, auteur, ISBN, disponible)</li>
+                        <li><code>Emprunteur</code> (nom, matricule, livres empruntés)</li>
+                        <li><code>Bibliotheque</code> (stock de livres, liste d'emprunteurs)</li>
+                    </ul>
+                    <p><strong>Fonctionnalités :</strong></p>
+                    <ol>
+                        <li>Ajouter/supprimer des livres</li>
+                        <li>Emprunter/retourner des livres</li>
+                        <li>Rechercher des livres par auteur ou titre</li>
+                        <li>Afficher l'historique d'un emprunteur</li>
+                        <li>Sauvegarder/charger depuis un fichier</li>
+                    </ol>
+                    <p><strong>Concepts utilisés :</strong> Classes, Collections (List, Map), Fichiers I/O, Optional, Exceptions</p>
+                </div>
+
+                <div class="exercise">
+                    <h3>Projet 2 : Application Bancaire Simple</h3>
+                    <p><strong>Objectif :</strong> Créer une mini-banque.</p>
+                    <p><strong>Classes nécessaires :</strong></p>
+                    <ul>
+                        <li><code>CompteBancaire</code> (numéro, solde, titulaire, historique)</li>
+                        <li><code>Transaction</code> (date, type, montant)</li>
+                        <li>Enum <code>TypeTransaction</code> (DEPOT, RETRAIT, VIREMENT)</li>
+                    </ul>
+                    <p><strong>Fonctionnalités :</strong></p>
+                    <ol>
+                        <li>Créer/fermer des comptes</li>
+                        <li>Déposer/retirer de l'argent</li>
+                        <li>Effectuer des virements entre comptes</li>
+                        <li>Consulter l'historique des transactions</li>
+                        <li>Calculer le solde moyen sur une période</li>
+                        <li>Sauvegarder les données</li>
+                    </ol>
+                    <p><strong>Concepts utilisés :</strong> Classes, Enums, Collections, Streams, Fichiers I/O, Exceptions personnalisées</p>
+                </div>
+
+                <div class="exercise">
+                    <h3>Projet 3 : Système de Transport SOTRA</h3>
+                    <p><strong>Objectif :</strong> Créer un système de gestion de transport inspiré de la SOTRA.</p>
+                    <p><strong>Classes nécessaires :</strong></p>
+                    <ul>
+                        <li><code>Ligne</code> (numéro, trajet, prix, véhicules)</li>
+                        <li><code>Vehicule</code> (abstrait : Gbaka, Bus, BakabaKa)</li>
+                        <li><code>Trajet</code> (départ, arrivée, heure, passagers)</li>
+                        <li><code>Passager</code> (nom, carte, solde)</li>
+                        <li><code>Gare</code> (nom, lignes disponibles, horaires)</li>
+                    </ul>
+                    <p><strong>Fonctionnalités :</strong></p>
+                    <ol>
+                        <li>Créer des lignes de transport</li>
+                        <li>Gérer plusieurs types de véhicules par ligne</li>
+                        <li>Système de carte de transport (recharge, débit)</li>
+                        <li>Horaires des départs</li>
+                        <li>Statistiques : ligne la plus fréquentée, heures de pointe</li>
+                        <li>Sauvegarde persistante</li>
+                    </ol>
+                    <p><strong>Concepts utilisés :</strong> Classes abstraites, Héritage, Collections, Enums, Fichiers I/O</p>
+                </div>
+
+                <div class="info-box example">
+                    <h4>💡 Conseils pour réussir</h4>
+                    <ul>
+                        <li>Commence par dessiner le diagramme de classes</li>
+                        <li>Implémente les classes une par une</li>
+                        <li>Teste chaque fonctionnalité au fur et à mesure</li>
+                        <li>Ajoute les exceptions et la sauvegarde en dernier</li>
+                        <li>N'hésite pas à regarder les exemples du manuel !</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Astuces Section -->
+            <section id="astuces" class="content-section">
+                <h2>💎 Astuces et Pièges à Éviter</h2>
+
+                <div class="info-box why">
+                    <h4>🎯 Deviens un meilleur programmeur</h4>
+                    <p>Ces astuces et pièges sont tirés de l'expérience. Évite les erreurs communes et code comme un pro !</p>
+                </div>
+
+                <div class="exercise">
+                    <h3>🎯 Astuces Classes</h3>
+                    <p><strong>✅ ASTUCE 1 : Utilise toujours <code>private</code> pour les attributs</strong></p>
+                    <div class="code-block">
+                        <pre><code><span class="comment">// ❌ MAUVAIS</span>
+<span class="keyword">public class</span> <span class="class-name">Personne</span> {
+    <span class="keyword">public</span> <span class="class-name">String</span> nom; <span class="comment">// N'importe qui peut modifier</span>
+}
+
+<span class="comment">// ✅ BON</span>
+<span class="keyword">public class</span> <span class="class-name">Personne</span> {
+    <span class="keyword">private</span> <span class="class-name">String</span> nom;
+
+    <span class="keyword">public</span> <span class="class-name">String</span> <span class="method">getNom</span>() { <span class="keyword">return</span> nom; }
+    <span class="keyword">public void</span> <span class="method">setNom</span>(<span class="class-name">String</span> nom) {
+        <span class="keyword">if</span> (nom != <span class="keyword">null</span> && !nom.isEmpty()) {
+            <span class="keyword">this</span>.nom = nom;
+        }
+    }
+}
+</code></pre>
+                    </div>
+
+                    <p><strong>⚠️ PIÈGE : Oublier <code>this</code> dans le constructeur</strong></p>
+                    <div class="code-block">
+                        <pre><code><span class="comment">// ❌ Bug subtil !</span>
+<span class="keyword">public</span> <span class="method">Personne</span>(<span class="class-name">String</span> nom) {
+    nom = nom; <span class="comment">// Ça ne fait rien !</span>
+}
+
+<span class="comment">// ✅ Correct</span>
+<span class="keyword">public</span> <span class="method">Personne</span>(<span class="class-name">String</span> nom) {
+    <span class="keyword">this</span>.nom = nom;
+}
+</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h3>🎯 Astuces Collections</h3>
+                    <p><strong>✅ ASTUCE : Déclare avec l'interface, instancie avec l'implémentation</strong></p>
+                    <div class="code-block">
+                        <pre><code><span class="comment">// ✅ BON - Plus flexible</span>
+<span class="class-name">List</span>&lt;<span class="class-name">String</span>&gt; liste = <span class="keyword">new</span> <span class="class-name">ArrayList</span>&lt;&gt;();
+
+<span class="comment">// ❌ MOINS FLEXIBLE</span>
+<span class="class-name">ArrayList</span>&lt;<span class="class-name">String</span>&gt; liste = <span class="keyword">new</span> <span class="class-name">ArrayList</span>&lt;&gt;();
+</code></pre>
+                    </div>
+
+                    <p><strong>⚠️ PIÈGE : Modifier une liste pendant qu'on la parcourt</strong></p>
+                    <div class="code-block">
+                        <pre><code><span class="comment">// ❌ ConcurrentModificationException !</span>
+<span class="keyword">for</span> (<span class="class-name">String</span> item : liste) {
+    <span class="keyword">if</span> (item.equals(<span class="string">"supprimer"</span>)) {
+        liste.remove(item); <span class="comment">// BOOM !</span>
+    }
+}
+
+<span class="comment">// ✅ Utilise removeIf</span>
+liste.removeIf(item -&gt; item.equals(<span class="string">"supprimer"</span>));
+</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h3>🎯 Astuces Streams</h3>
+                    <p><strong>✅ ASTUCE : Les streams sont lazy (paresseux)</strong></p>
+                    <div class="code-block">
+                        <pre><code><span class="comment">// ❌ Ce code ne fait RIEN</span>
+liste.stream()
+    .filter(x -&gt; x &gt; <span class="number">10</span>)
+    .map(x -&gt; x * <span class="number">2</span>); <span class="comment">// Pas d'opération terminale !</span>
+
+<span class="comment">// ✅ Ajoute collect()</span>
+liste.stream()
+    .filter(x -&gt; x &gt; <span class="number">10</span>)
+    .map(x -&gt; x * <span class="number">2</span>)
+    .collect(<span class="class-name">Collectors</span>.toList());
+</code></pre>
+                    </div>
+
+                    <p><strong>⚠️ PIÈGE : Ne pas réutiliser un stream</strong></p>
+                    <div class="code-block">
+                        <pre><code><span class="comment">// ❌ IllegalStateException !</span>
+<span class="class-name">Stream</span>&lt;<span class="class-name">String</span>&gt; stream = liste.stream();
+stream.forEach(<span class="class-name">System</span>.out::println);
+stream.forEach(<span class="class-name">System</span>.out::println); <span class="comment">// Erreur !</span>
+
+<span class="comment">// ✅ Crée un nouveau stream</span>
+liste.stream().forEach(<span class="class-name">System</span>.out::println);
+liste.stream().forEach(<span class="class-name">System</span>.out::println);
+</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h3>🎯 Astuces Optional</h3>
+                    <p><strong>⚠️ PIÈGE : Ne jamais faire <code>.get()</code> sans vérifier</strong></p>
+                    <div class="code-block">
+                        <pre><code><span class="comment">// ❌ Peut planter !</span>
+<span class="class-name">String</span> nom = optional.get();
+
+<span class="comment">// ✅ Vérifie d'abord</span>
+<span class="keyword">if</span> (optional.isPresent()) {
+    <span class="class-name">String</span> nom = optional.get();
+}
+
+<span class="comment">// ✅ Ou utilise orElse</span>
+<span class="class-name">String</span> nom = optional.orElse(<span class="string">"Inconnu"</span>);
+</code></pre>
+                    </div>
+                </div>
+
+                <div class="info-box example">
+                    <h4>📚 Ressources Supplémentaires</h4>
+                    <p><strong>Commandes utiles :</strong></p>
+                    <pre style="background: #2d2d2d; padding: 10px; border-radius: 5px; color: #fff;"><code># Compiler et exécuter
+javac MaClasse.java
+java MaClasse
+
+# Compiler un projet avec plusieurs fichiers
+javac -d bin src/**/*.java
+java -cp bin Main
+
+# Créer un JAR exécutable
+jar cvfe MonAppli.jar Main *.class
+java -jar MonAppli.jar
+</code></pre>
+                </div>
+
+                <div class="info-box why">
+                    <h4>💡 Conseil final</h4>
+                    <p><em>"Un bon programmeur, c'est comme un bon chauffeur de gbaka : il connaît tous les raccourcis, évite les pièges, et arrive toujours à destination !"</em></p>
+                    <p><strong>Bon code, petit frère ! 🚀🇨🇮</strong></p>
+                </div>
+            </section>
+
         </main>
     </div>
 

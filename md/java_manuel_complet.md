@@ -1465,33 +1465,1493 @@ Améliore le projet en ajoutant :
 
 ---
 
+## 9. Les Exceptions - Gérer les Problèmes
+
+### 🤔 Pourquoi les exceptions ?
+Tu sais quand tu prends le **gbaka** et que des fois il y a un problème en route (panne, accident, contrôle de police...) ? En Java, les **exceptions** c'est pareil : c'est pour gérer les problèmes qui peuvent arriver pendant l'exécution du programme.
+
+### 📚 Les types d'exceptions
+
+**1. Exceptions vérifiées (Checked Exceptions)**
+Ce sont les problèmes qu'on peut prévoir : fichier qui n'existe pas, connexion internet coupée...
+
+**2. Exceptions non vérifiées (Unchecked Exceptions)**
+Ce sont les erreurs de programmation : division par zéro, accès à un index qui n'existe pas...
+
+### 🎯 Try-Catch - Le filet de sécurité
+
+```java
+public class GestionArgent {
+    public static void main(String[] args) {
+        try {
+            // Code qui peut causer un problème
+            int argentDisponible = 5000;
+            int prixPlat = 0; // Oups, prix à zéro!
+
+            int nombrePlats = argentDisponible / prixPlat;
+            System.out.println("Tu peux acheter " + nombrePlats + " plats");
+
+        } catch (ArithmeticException e) {
+            // On attrape l'erreur et on gère proprement
+            System.out.println("❌ Erreur : On ne peut pas diviser par zéro !");
+            System.out.println("Vérifie le prix du plat d'abord.");
+        }
+
+        System.out.println("Le programme continue normalement ! ✅");
+    }
+}
+```
+
+### 🎯 Plusieurs catch - Gérer différents problèmes
+
+```java
+public class CommandeMaquis {
+    public static void commander(String nomPlat, int argent, String[] menu) {
+        try {
+            // Chercher le plat dans le menu
+            int indexPlat = trouverPlat(nomPlat, menu);
+
+            // Vérifier l'argent
+            if (argent <= 0) {
+                throw new IllegalArgumentException("Montant invalide !");
+            }
+
+            System.out.println("✅ Commande réussie : " + menu[indexPlat]);
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("❌ Ce plat n'existe pas dans notre menu !");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ " + e.getMessage());
+
+        } catch (Exception e) {
+            System.out.println("❌ Une erreur inconnue s'est produite : " + e.getMessage());
+
+        } finally {
+            // Ce bloc s'exécute TOUJOURS, qu'il y ait erreur ou pas
+            System.out.println("Merci de votre visite ! 🙏");
+        }
+    }
+
+    private static int trouverPlat(String nom, String[] menu) {
+        for (int i = 0; i < menu.length; i++) {
+            if (menu[i].equalsIgnoreCase(nom)) {
+                return i;
+            }
+        }
+        throw new ArrayIndexOutOfBoundsException();
+    }
+}
+```
+
+### 🎯 Créer ses propres exceptions
+
+```java
+// Exception personnalisée pour le maquis
+class StockInsuffisantException extends Exception {
+    private String produit;
+    private int stockActuel;
+    private int quantiteDemandee;
+
+    public StockInsuffisantException(String produit, int stockActuel, int quantiteDemandee) {
+        super("Stock insuffisant pour " + produit);
+        this.produit = produit;
+        this.stockActuel = stockActuel;
+        this.quantiteDemandee = quantiteDemandee;
+    }
+
+    public String getMessageDetaille() {
+        return "❌ Désolé, il reste seulement " + stockActuel + " " + produit +
+               " mais tu demandes " + quantiteDemandee;
+    }
+}
+
+class ArgentInsuffisantException extends Exception {
+    private int prixTotal;
+    private int argentDonne;
+
+    public ArgentInsuffisantException(int prixTotal, int argentDonne) {
+        super("Argent insuffisant");
+        this.prixTotal = prixTotal;
+        this.argentDonne = argentDonne;
+    }
+
+    public int getManquant() {
+        return prixTotal - argentDonne;
+    }
+}
+
+// Utilisation
+public class MaquisAvecExceptions {
+    private Map<String, Integer> stock;
+    private Map<String, Integer> prix;
+
+    public MaquisAvecExceptions() {
+        stock = new HashMap<>();
+        prix = new HashMap<>();
+
+        stock.put("Attiéké", 10);
+        stock.put("Alloco", 5);
+        stock.put("Poisson", 3);
+
+        prix.put("Attiéké", 500);
+        prix.put("Alloco", 300);
+        prix.put("Poisson", 2000);
+    }
+
+    public void acheter(String produit, int quantite, int argent) {
+        try {
+            // Vérifier que le produit existe
+            if (!stock.containsKey(produit)) {
+                throw new IllegalArgumentException("Produit inconnu : " + produit);
+            }
+
+            // Vérifier le stock
+            int stockActuel = stock.get(produit);
+            if (stockActuel < quantite) {
+                throw new StockInsuffisantException(produit, stockActuel, quantite);
+            }
+
+            // Vérifier l'argent
+            int prixTotal = prix.get(produit) * quantite;
+            if (argent < prixTotal) {
+                throw new ArgentInsuffisantException(prixTotal, argent);
+            }
+
+            // Tout est OK, on vend !
+            stock.put(produit, stockActuel - quantite);
+            int monnaie = argent - prixTotal;
+
+            System.out.println("✅ Vente réussie !");
+            System.out.println("   " + quantite + " " + produit + " pour " + prixTotal + "F");
+            if (monnaie > 0) {
+                System.out.println("   Votre monnaie : " + monnaie + "F");
+            }
+
+        } catch (StockInsuffisantException e) {
+            System.out.println(e.getMessageDetaille());
+            System.out.println("💡 Conseil : Réduis ta commande ou reviens demain !");
+
+        } catch (ArgentInsuffisantException e) {
+            System.out.println("❌ " + e.getMessage());
+            System.out.println("   Il te manque " + e.getManquant() + "F");
+            System.out.println("💡 Va retirer de l'argent et reviens !");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ " + e.getMessage());
+            System.out.println("💡 Regarde le menu d'abord !");
+        }
+    }
+
+    public static void main(String[] args) {
+        MaquisAvecExceptions maquis = new MaquisAvecExceptions();
+
+        System.out.println("=== TEST 1 : Achat normal ===");
+        maquis.acheter("Attiéké", 2, 1200);
+
+        System.out.println("\n=== TEST 2 : Stock insuffisant ===");
+        maquis.acheter("Poisson", 5, 20000);
+
+        System.out.println("\n=== TEST 3 : Argent insuffisant ===");
+        maquis.acheter("Poisson", 2, 3000);
+
+        System.out.println("\n=== TEST 4 : Produit inconnu ===");
+        maquis.acheter("Pizza", 1, 5000);
+    }
+}
+```
+
+### 🏋️‍♂️ **EXERCICE 8 : Gestionnaire de transport avec exceptions**
+
+Crée une classe `GestionnaireTransport` qui gère les réservations de places dans un gbaka.
+
+**Consignes :**
+1. Crée une exception `PlacesInsuffisantesException`
+2. Crée une exception `TrajetInvalideException`
+3. Implémente une méthode `reserverPlaces(String trajet, int nbPlaces)` qui lance ces exceptions
+4. Gère proprement les exceptions avec try-catch
+
+**Solution :**
+```java
+class PlacesInsuffisantesException extends Exception {
+    private int placesDisponibles;
+    private int placesDemandees;
+
+    public PlacesInsuffisantesException(int disponibles, int demandees) {
+        super("Pas assez de places !");
+        this.placesDisponibles = disponibles;
+        this.placesDemandees = demandees;
+    }
+
+    public String getDetails() {
+        return "Il reste " + placesDisponibles + " places mais tu demandes " + placesDemandees;
+    }
+}
+
+class TrajetInvalideException extends Exception {
+    public TrajetInvalideException(String trajet) {
+        super("Trajet invalide : " + trajet);
+    }
+}
+
+class GestionnaireTransport {
+    private Map<String, Integer> placesParTrajet;
+    private final int CAPACITE_GBAKA = 19; // Un gbaka a 19 places
+
+    public GestionnaireTransport() {
+        placesParTrajet = new HashMap<>();
+        placesParTrajet.put("Yopougon-Plateau", CAPACITE_GBAKA);
+        placesParTrajet.put("Adjamé-Cocody", CAPACITE_GBAKA);
+        placesParTrajet.put("Abobo-Marcory", CAPACITE_GBAKA);
+    }
+
+    public void reserverPlaces(String trajet, int nbPlaces)
+            throws PlacesInsuffisantesException, TrajetInvalideException {
+
+        // Vérifier que le trajet existe
+        if (!placesParTrajet.containsKey(trajet)) {
+            throw new TrajetInvalideException(trajet);
+        }
+
+        // Vérifier les places disponibles
+        int placesDisponibles = placesParTrajet.get(trajet);
+        if (placesDisponibles < nbPlaces) {
+            throw new PlacesInsuffisantesException(placesDisponibles, nbPlaces);
+        }
+
+        // Réservation OK
+        placesParTrajet.put(trajet, placesDisponibles - nbPlaces);
+        System.out.println("✅ Réservation confirmée !");
+        System.out.println("   Trajet : " + trajet);
+        System.out.println("   Places réservées : " + nbPlaces);
+        System.out.println("   Places restantes : " + placesParTrajet.get(trajet));
+    }
+
+    public void afficherDisponibilites() {
+        System.out.println("\n📊 PLACES DISPONIBLES 📊");
+        placesParTrajet.forEach((trajet, places) ->
+            System.out.println("   " + trajet + " : " + places + "/" + CAPACITE_GBAKA + " places"));
+    }
+
+    public static void main(String[] args) {
+        GestionnaireTransport transport = new GestionnaireTransport();
+
+        try {
+            transport.afficherDisponibilites();
+
+            System.out.println("\n=== Réservation 1 ===");
+            transport.reserverPlaces("Yopougon-Plateau", 5);
+
+            System.out.println("\n=== Réservation 2 ===");
+            transport.reserverPlaces("Yopougon-Plateau", 15); // Trop !
+
+        } catch (PlacesInsuffisantesException e) {
+            System.out.println("❌ " + e.getMessage());
+            System.out.println("   " + e.getDetails());
+
+        } catch (TrajetInvalideException e) {
+            System.out.println("❌ " + e.getMessage());
+        }
+
+        try {
+            System.out.println("\n=== Réservation 3 ===");
+            transport.reserverPlaces("Bouaké-Abidjan", 2); // Trajet invalide
+
+        } catch (PlacesInsuffisantesException | TrajetInvalideException e) {
+            System.out.println("❌ " + e.getMessage());
+        }
+
+        transport.afficherDisponibilites();
+    }
+}
+```
+
+### 💡 **Bonnes pratiques avec les exceptions**
+
+**✅ À FAIRE :**
+- Utilise des exceptions pour les situations exceptionnelles uniquement
+- Crée des exceptions personnalisées claires et explicites
+- Toujours nettoyer les ressources (fichiers, connexions) dans le bloc `finally`
+- Donner des messages d'erreur compréhensibles
+
+**❌ À ÉVITER :**
+- Ne jamais avoir un bloc catch vide : `catch (Exception e) { }`
+- Ne pas utiliser les exceptions pour le contrôle de flux normal
+- Ne pas attraper `Exception` sauf si vraiment nécessaire
+- Ne pas ignorer les exceptions
+
+```java
+// ❌ MAUVAIS
+try {
+    // code...
+} catch (Exception e) {
+    // Rien... on ignore l'erreur !
+}
+
+// ✅ BON
+try {
+    // code...
+} catch (Exception e) {
+    System.err.println("Erreur : " + e.getMessage());
+    e.printStackTrace(); // Pour déboguer
+    // Gérer l'erreur proprement
+}
+```
+
+---
+
+## 10. Les Fichiers I/O - Sauvegarder et Lire
+
+### 🤔 Pourquoi les fichiers ?
+Tu sais comment tu notes les numéros de tes clients dans un cahier ? En Java, on peut **sauvegarder** des infos dans des fichiers et les **relire** plus tard. C'est indispensable pour que tes données survivent après la fermeture du programme !
+
+### 📚 Écrire dans un fichier
+
+**Méthode simple avec Files (Java moderne)**
+```java
+import java.nio.file.*;
+import java.io.IOException;
+import java.util.*;
+
+public class EcritureFichier {
+    public static void main(String[] args) {
+        // Créer une liste de contacts
+        List<String> contacts = Arrays.asList(
+            "Kouassi: 07 12 34 56 78",
+            "Aya: 05 98 76 54 32",
+            "Adjoua: 01 23 45 67 89",
+            "Koffi: 07 55 66 77 88"
+        );
+
+        try {
+            // Écrire dans le fichier (écrase le contenu existant)
+            Path fichier = Paths.get("contacts.txt");
+            Files.write(fichier, contacts);
+
+            System.out.println("✅ Contacts sauvegardés dans " + fichier.toAbsolutePath());
+
+        } catch (IOException e) {
+            System.out.println("❌ Erreur lors de l'écriture : " + e.getMessage());
+        }
+    }
+}
+```
+
+**Ajouter du contenu (append) sans écraser**
+```java
+public class AjouterAuFichier {
+    public static void main(String[] args) {
+        try {
+            Path fichier = Paths.get("contacts.txt");
+            String nouveauContact = "Yao: 01 11 22 33 44";
+
+            // Ajouter à la fin du fichier
+            Files.write(fichier,
+                       Arrays.asList(nouveauContact),
+                       StandardOpenOption.APPEND);
+
+            System.out.println("✅ Contact ajouté !");
+
+        } catch (IOException e) {
+            System.out.println("❌ Erreur : " + e.getMessage());
+        }
+    }
+}
+```
+
+### 📚 Lire un fichier
+
+```java
+import java.nio.file.*;
+import java.io.IOException;
+import java.util.List;
+
+public class LectureFichier {
+    public static void main(String[] args) {
+        try {
+            Path fichier = Paths.get("contacts.txt");
+
+            // Lire toutes les lignes
+            List<String> lignes = Files.readAllLines(fichier);
+
+            System.out.println("📞 CONTACTS 📞");
+            System.out.println("Nombre de contacts : " + lignes.size());
+            System.out.println();
+
+            for (int i = 0; i < lignes.size(); i++) {
+                System.out.println((i + 1) + ". " + lignes.get(i));
+            }
+
+        } catch (IOException e) {
+            System.out.println("❌ Fichier non trouvé ou erreur de lecture");
+        }
+    }
+}
+```
+
+### 🎯 Exemple pratique : Gestionnaire de stock persistant
+
+```java
+import java.nio.file.*;
+import java.io.*;
+import java.util.*;
+
+public class StockPersistant {
+    private Map<String, Integer> stock;
+    private Map<String, Integer> prix;
+    private final String FICHIER_STOCK = "stock_maquis.txt";
+
+    public StockPersistant() {
+        stock = new HashMap<>();
+        prix = new HashMap<>();
+        chargerStock();
+    }
+
+    // Charger le stock depuis le fichier
+    private void chargerStock() {
+        try {
+            Path fichier = Paths.get(FICHIER_STOCK);
+
+            if (!Files.exists(fichier)) {
+                System.out.println("📝 Création d'un nouveau fichier de stock...");
+                initialiserStockParDefaut();
+                sauvegarderStock();
+                return;
+            }
+
+            List<String> lignes = Files.readAllLines(fichier);
+            System.out.println("📂 Chargement du stock...");
+
+            for (String ligne : lignes) {
+                // Format : Produit|Quantité|Prix
+                String[] parts = ligne.split("\\|");
+                if (parts.length == 3) {
+                    String produit = parts[0];
+                    int quantite = Integer.parseInt(parts[1]);
+                    int prixUnitaire = Integer.parseInt(parts[2]);
+
+                    stock.put(produit, quantite);
+                    prix.put(produit, prixUnitaire);
+                }
+            }
+
+            System.out.println("✅ Stock chargé : " + stock.size() + " produits");
+
+        } catch (IOException e) {
+            System.out.println("❌ Erreur chargement : " + e.getMessage());
+            initialiserStockParDefaut();
+        }
+    }
+
+    // Sauvegarder le stock dans le fichier
+    private void sauvegarderStock() {
+        try {
+            List<String> lignes = new ArrayList<>();
+
+            for (String produit : stock.keySet()) {
+                int quantite = stock.get(produit);
+                int prixUnit = prix.get(produit);
+                lignes.add(produit + "|" + quantite + "|" + prixUnit);
+            }
+
+            Files.write(Paths.get(FICHIER_STOCK), lignes);
+            System.out.println("💾 Stock sauvegardé !");
+
+        } catch (IOException e) {
+            System.out.println("❌ Erreur sauvegarde : " + e.getMessage());
+        }
+    }
+
+    private void initialiserStockParDefaut() {
+        stock.put("Attiéké", 50);
+        stock.put("Alloco", 30);
+        stock.put("Poisson", 20);
+        stock.put("Kedjenou", 15);
+
+        prix.put("Attiéké", 500);
+        prix.put("Alloco", 300);
+        prix.put("Poisson", 2000);
+        prix.put("Kedjenou", 3000);
+    }
+
+    public void ajouterProduit(String produit, int quantite, int prixUnitaire) {
+        stock.put(produit, stock.getOrDefault(produit, 0) + quantite);
+        prix.put(produit, prixUnitaire);
+        sauvegarderStock();
+        System.out.println("✅ Produit ajouté/mis à jour : " + produit);
+    }
+
+    public boolean vendre(String produit, int quantite) {
+        if (!stock.containsKey(produit)) {
+            System.out.println("❌ Produit inconnu : " + produit);
+            return false;
+        }
+
+        int stockActuel = stock.get(produit);
+        if (stockActuel < quantite) {
+            System.out.println("❌ Stock insuffisant pour " + produit);
+            return false;
+        }
+
+        stock.put(produit, stockActuel - quantite);
+        sauvegarderStock();
+
+        int total = quantite * prix.get(produit);
+        System.out.println("✅ Vendu " + quantite + " " + produit + " pour " + total + "F");
+        return true;
+    }
+
+    public void afficherStock() {
+        System.out.println("\n📦 STOCK ACTUEL 📦");
+        stock.forEach((produit, quantite) -> {
+            int prixUnit = prix.get(produit);
+            System.out.println(produit + " : " + quantite + " unités (" + prixUnit + "F/unité)");
+        });
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        StockPersistant stock = new StockPersistant();
+
+        stock.afficherStock();
+
+        stock.vendre("Attiéké", 5);
+        stock.vendre("Poisson", 3);
+
+        stock.ajouterProduit("Alloco", 10, 300);
+
+        stock.afficherStock();
+
+        System.out.println("\n💡 Les données sont sauvegardées dans " + stock.FICHIER_STOCK);
+        System.out.println("   Relance le programme pour voir que le stock est conservé !");
+    }
+}
+```
+
+### 🏋️‍♂️ **EXERCICE 9 : Carnet de notes persistant**
+
+Crée un programme qui gère un carnet de notes et sauvegarde les données dans un fichier.
+
+**Consignes :**
+1. Classe `Eleve` avec nom, matricule et liste de notes
+2. Classe `CarnetDeNotes` qui sauvegarde/charge depuis un fichier
+3. Méthodes : `ajouterEleve()`, `ajouterNote()`, `calculerMoyenne()`, `afficherBulletin()`
+4. Format fichier : `Matricule|Nom|Note1,Note2,Note3`
+
+**Solution :**
+```java
+import java.nio.file.*;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
+
+class Eleve {
+    String matricule;
+    String nom;
+    List<Double> notes;
+
+    public Eleve(String matricule, String nom) {
+        this.matricule = matricule;
+        this.nom = nom;
+        this.notes = new ArrayList<>();
+    }
+
+    public void ajouterNote(double note) {
+        if (note >= 0 && note <= 20) {
+            notes.add(note);
+        }
+    }
+
+    public double calculerMoyenne() {
+        if (notes.isEmpty()) return 0.0;
+        return notes.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+    }
+
+    public String getAppreciation() {
+        double moy = calculerMoyenne();
+        if (moy >= 16) return "Très bien 🏆";
+        if (moy >= 14) return "Bien ✅";
+        if (moy >= 12) return "Assez bien 👍";
+        if (moy >= 10) return "Passable 😐";
+        return "Insuffisant ❌";
+    }
+
+    @Override
+    public String toString() {
+        return matricule + " - " + nom + " : " +
+               String.format("%.2f", calculerMoyenne()) + "/20";
+    }
+}
+
+class CarnetDeNotes {
+    private Map<String, Eleve> eleves;
+    private final String FICHIER = "carnet_notes.txt";
+
+    public CarnetDeNotes() {
+        eleves = new HashMap<>();
+        charger();
+    }
+
+    private void charger() {
+        try {
+            Path fichier = Paths.get(FICHIER);
+            if (!Files.exists(fichier)) {
+                System.out.println("📝 Nouveau carnet de notes créé");
+                return;
+            }
+
+            List<String> lignes = Files.readAllLines(fichier);
+            for (String ligne : lignes) {
+                String[] parts = ligne.split("\\|");
+                if (parts.length >= 2) {
+                    String matricule = parts[0];
+                    String nom = parts[1];
+                    Eleve eleve = new Eleve(matricule, nom);
+
+                    if (parts.length == 3 && !parts[2].isEmpty()) {
+                        String[] notesStr = parts[2].split(",");
+                        for (String noteStr : notesStr) {
+                            eleve.ajouterNote(Double.parseDouble(noteStr));
+                        }
+                    }
+
+                    eleves.put(matricule, eleve);
+                }
+            }
+            System.out.println("✅ Carnet chargé : " + eleves.size() + " élèves");
+
+        } catch (IOException e) {
+            System.out.println("❌ Erreur chargement : " + e.getMessage());
+        }
+    }
+
+    private void sauvegarder() {
+        try {
+            List<String> lignes = new ArrayList<>();
+
+            for (Eleve eleve : eleves.values()) {
+                String notesStr = eleve.notes.stream()
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(","));
+
+                lignes.add(eleve.matricule + "|" + eleve.nom + "|" + notesStr);
+            }
+
+            Files.write(Paths.get(FICHIER), lignes);
+            System.out.println("💾 Carnet sauvegardé !");
+
+        } catch (IOException e) {
+            System.out.println("❌ Erreur sauvegarde : " + e.getMessage());
+        }
+    }
+
+    public void ajouterEleve(String matricule, String nom) {
+        if (eleves.containsKey(matricule)) {
+            System.out.println("❌ Élève déjà existant : " + matricule);
+            return;
+        }
+        eleves.put(matricule, new Eleve(matricule, nom));
+        sauvegarder();
+        System.out.println("✅ Élève ajouté : " + nom);
+    }
+
+    public void ajouterNote(String matricule, double note) {
+        Eleve eleve = eleves.get(matricule);
+        if (eleve == null) {
+            System.out.println("❌ Élève introuvable : " + matricule);
+            return;
+        }
+        eleve.ajouterNote(note);
+        sauvegarder();
+        System.out.println("✅ Note ajoutée pour " + eleve.nom);
+    }
+
+    public void afficherBulletin(String matricule) {
+        Eleve eleve = eleves.get(matricule);
+        if (eleve == null) {
+            System.out.println("❌ Élève introuvable : " + matricule);
+            return;
+        }
+
+        System.out.println("\n📋 BULLETIN DE " + eleve.nom.toUpperCase() + " 📋");
+        System.out.println("Matricule : " + eleve.matricule);
+        System.out.println("Notes : " + eleve.notes);
+        System.out.println("Moyenne : " + String.format("%.2f", eleve.calculerMoyenne()) + "/20");
+        System.out.println("Appréciation : " + eleve.getAppreciation());
+        System.out.println();
+    }
+
+    public void afficherClassement() {
+        System.out.println("\n🏆 CLASSEMENT DE LA CLASSE 🏆");
+
+        List<Eleve> classement = new ArrayList<>(eleves.values());
+        classement.sort((a, b) -> Double.compare(b.calculerMoyenne(), a.calculerMoyenne()));
+
+        for (int i = 0; i < classement.size(); i++) {
+            Eleve eleve = classement.get(i);
+            System.out.println((i + 1) + ". " + eleve + " - " + eleve.getAppreciation());
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        CarnetDeNotes carnet = new CarnetDeNotes();
+
+        // Ajouter des élèves
+        carnet.ajouterEleve("MAT001", "Kouassi");
+        carnet.ajouterEleve("MAT002", "Aya");
+        carnet.ajouterEleve("MAT003", "Adjoua");
+
+        // Ajouter des notes
+        carnet.ajouterNote("MAT001", 15.5);
+        carnet.ajouterNote("MAT001", 14.0);
+        carnet.ajouterNote("MAT001", 16.5);
+
+        carnet.ajouterNote("MAT002", 18.0);
+        carnet.ajouterNote("MAT002", 17.5);
+        carnet.ajouterNote("MAT002", 19.0);
+
+        carnet.ajouterNote("MAT003", 12.0);
+        carnet.ajouterNote("MAT003", 11.5);
+
+        // Afficher bulletins
+        carnet.afficherBulletin("MAT001");
+        carnet.afficherBulletin("MAT002");
+
+        // Classement
+        carnet.afficherClassement();
+
+        System.out.println("💡 Relance le programme : les données sont conservées !");
+    }
+}
+```
+
+---
+
+## 11. Les Enums - Les Choix Limités
+
+### 🤔 Pourquoi les enums ?
+Tu sais les jours de la semaine ? Il y en a 7, pas plus, pas moins. Ou les catégories de plats dans un maquis : entrée, plat, dessert, boisson. Les **enums** servent à définir un ensemble fixe de constantes.
+
+### 📚 Comment ça marche ?
+
+```java
+// Enum simple
+public enum JourSemaine {
+    LUNDI, MARDI, MERCREDI, JEUDI, VENDREDI, SAMEDI, DIMANCHE
+}
+
+// Utilisation
+public class TestEnum {
+    public static void main(String[] args) {
+        JourSemaine jour = JourSemaine.LUNDI;
+
+        System.out.println("Aujourd'hui c'est : " + jour);
+
+        // Switch avec enum
+        switch (jour) {
+            case LUNDI:
+            case MARDI:
+            case MERCREDI:
+            case JEUDI:
+            case VENDREDI:
+                System.out.println("C'est un jour de travail 💼");
+                break;
+            case SAMEDI:
+            case DIMANCHE:
+                System.out.println("C'est le weekend ! 🎉");
+                break;
+        }
+    }
+}
+```
+
+### 🎯 Enum avec valeurs et méthodes
+
+```java
+public enum CategoriePlat {
+    ENTREE("Entrée", 500, "🥗"),
+    PLAT_PRINCIPAL("Plat principal", 2500, "🍽️"),
+    DESSERT("Dessert", 1000, "🍰"),
+    BOISSON("Boisson", 500, "🥤");
+
+    private final String libelle;
+    private final int prixMoyen;
+    private final String emoji;
+
+    // Constructeur
+    CategoriePlat(String libelle, int prixMoyen, String emoji) {
+        this.libelle = libelle;
+        this.prixMoyen = prixMoyen;
+        this.emoji = emoji;
+    }
+
+    public String getLibelle() { return libelle; }
+    public int getPrixMoyen() { return prixMoyen; }
+    public String getEmoji() { return emoji; }
+
+    public void afficher() {
+        System.out.println(emoji + " " + libelle + " (≈" + prixMoyen + "F)");
+    }
+}
+
+// Utilisation
+public class TestCategorie {
+    public static void main(String[] args) {
+        System.out.println("🍽️ CATÉGORIES DE PLATS 🍽️");
+
+        for (CategoriePlat cat : CategoriePlat.values()) {
+            cat.afficher();
+        }
+
+        CategoriePlat plat = CategoriePlat.PLAT_PRINCIPAL;
+        System.out.println("\nTu as choisi : " + plat.getLibelle());
+    }
+}
+```
+
+### 🎯 Exemple pratique : Statut de commande
+
+```java
+public enum StatutCommande {
+    EN_ATTENTE("En attente", "⏳", "La commande est enregistrée"),
+    EN_PREPARATION("En préparation", "👨‍🍳", "Le cuisinier prépare ton plat"),
+    PRETE("Prête", "✅", "Ta commande est prête !"),
+    LIVREE("Livrée", "🚚", "Bon appétit !"),
+    ANNULEE("Annulée", "❌", "Commande annulée");
+
+    private final String libelle;
+    private final String emoji;
+    private final String message;
+
+    StatutCommande(String libelle, String emoji, String message) {
+        this.libelle = libelle;
+        this.emoji = emoji;
+        this.message = message;
+    }
+
+    public String getLibelle() { return libelle; }
+    public String getEmoji() { return emoji; }
+    public String getMessage() { return message; }
+
+    public void afficher() {
+        System.out.println(emoji + " " + libelle + " : " + message);
+    }
+
+    public boolean peutPasser(StatutCommande nouveauStatut) {
+        // Définir les transitions valides
+        switch (this) {
+            case EN_ATTENTE:
+                return nouveauStatut == EN_PREPARATION || nouveauStatut == ANNULEE;
+            case EN_PREPARATION:
+                return nouveauStatut == PRETE || nouveauStatut == ANNULEE;
+            case PRETE:
+                return nouveauStatut == LIVREE;
+            case LIVREE:
+            case ANNULEE:
+                return false; // États finaux
+            default:
+                return false;
+        }
+    }
+}
+
+class Commande {
+    private String id;
+    private String client;
+    private StatutCommande statut;
+
+    public Commande(String id, String client) {
+        this.id = id;
+        this.client = client;
+        this.statut = StatutCommande.EN_ATTENTE;
+    }
+
+    public void changerStatut(StatutCommande nouveauStatut) {
+        if (statut.peutPasser(nouveauStatut)) {
+            statut = nouveauStatut;
+            System.out.println("✅ Commande " + id + " : " + statut.getLibelle());
+            statut.afficher();
+        } else {
+            System.out.println("❌ Impossible de passer de " + statut.getLibelle() +
+                             " à " + nouveauStatut.getLibelle());
+        }
+    }
+
+    public void afficher() {
+        System.out.println("\n📦 Commande #" + id);
+        System.out.println("   Client : " + client);
+        System.out.println("   " + statut.getEmoji() + " " + statut.getLibelle());
+    }
+
+    public static void main(String[] args) {
+        Commande cmd = new Commande("CMD001", "Kouassi");
+
+        cmd.afficher();
+
+        cmd.changerStatut(StatutCommande.EN_PREPARATION);
+        cmd.changerStatut(StatutCommande.PRETE);
+        cmd.changerStatut(StatutCommande.EN_ATTENTE); // ❌ Impossible !
+        cmd.changerStatut(StatutCommande.LIVREE);
+
+        cmd.afficher();
+    }
+}
+```
+
+### 🏋️‍♂️ **EXERCICE 10 : Gestion de niveaux scolaires**
+
+Crée un enum `NiveauScolaire` avec les niveaux : CP1, CP2, CE1, CE2, CM1, CM2, 6EME, 5EME, 4EME, 3EME.
+
+**Consignes :**
+1. Ajoute un champ `cycle` (Primaire, Collège)
+2. Ajoute un champ `classeSuperieure` pour naviguer entre niveaux
+3. Méthode `peutRedoubler()` qui retourne true sauf pour CM2 et 3EME
+4. Méthode `getNiveauSuivant()` pour passer au niveau supérieur
+
+---
+
 ## 🎉 Conclusion
 
 **Tu as maintenant maîtrisé les concepts essentiels de Java !**
 
 ### Ce que tu sais faire :
-✅ **Classes** - Créer des objets du monde réel  
-✅ **Interfaces** - Définir des contrats  
-✅ **Classes abstraites** - Créer des modèles  
-✅ **List** - Gérer des collections ordonnées  
-✅ **Map** - Créer des associations clé-valeur  
-✅ **Optional** - Éviter les erreurs null  
-✅ **Streams** - Traiter les données élégamment  
+✅ **Classes** - Créer des objets du monde réel
+✅ **Interfaces** - Définir des contrats
+✅ **Classes abstraites** - Créer des modèles
+✅ **List** - Gérer des collections ordonnées
+✅ **Map** - Créer des associations clé-valeur
+✅ **Optional** - Éviter les erreurs null
+✅ **Streams** - Traiter les données élégamment
+✅ **Exceptions** - Gérer les erreurs proprement
+✅ **Fichiers I/O** - Sauvegarder et charger des données
+✅ **Enums** - Définir des constantes typées
 
 ### 🎯 Prochaines étapes :
 1. **Maîtrise ces concepts** en pratiquant sur d'autres projets
-2. **Ajoute la persistance** (fichiers, base de données)  
-3. **Apprends les exceptions** pour gérer les erreurs
-4. **Découvre les threads** pour la programmation concurrente
+2. **Apprends les Generics** pour du code réutilisable
+3. **Découvre les threads** pour la programmation concurrente
+4. **Étudie les design patterns** (Singleton, Factory, Observer...)
 5. **Puis seulement après** : Spring, Spring Boot...
 
 ### 💡 Conseil de grand frère :
 Ne te précipite pas vers les frameworks ! Continue à faire des applications console variées:
 - Gestionnaire de bibliothèque
-- Système de gestion d'école  
+- Système de gestion d'école
 - Calculatrice scientifique
-- Jeu de cartes...
+- Jeu de cartes
+- Gestionnaire de contacts
+- Application bancaire simple
 
-Quand tu codes ces projets les yeux fermés, tu seras prêt pour Spring ! 
+Quand tu codes ces projets les yeux fermés, tu seras prêt pour Spring !
+
+---
+
+## 📝 QCM - Teste tes connaissances !
+
+### Quiz 1 : Les Classes
+
+**Question 1 :** Quel mot-clé utilise-t-on pour créer une nouvelle instance de classe ?
+- A) `create`
+- B) `new`
+- C) `instance`
+- D) `make`
+
+**Réponse :** B) `new`
+
+---
+
+**Question 2 :** Que signifie le mot-clé `private` devant un attribut ?
+- A) L'attribut est accessible depuis n'importe où
+- B) L'attribut est accessible seulement dans la classe
+- C) L'attribut ne peut jamais être modifié
+- D) L'attribut est accessible dans toutes les classes du package
+
+**Réponse :** B) L'attribut est accessible seulement dans la classe
+
+---
+
+**Question 3 :** Qu'est-ce qu'un constructeur ?
+- A) Une méthode qui détruit un objet
+- B) Une méthode spéciale appelée lors de la création d'un objet
+- C) Une méthode qui retourne toujours `void`
+- D) Une variable de classe
+
+**Réponse :** B) Une méthode spéciale appelée lors de la création d'un objet
+
+---
+
+### Quiz 2 : Les Interfaces vs Classes Abstraites
+
+**Question 1 :** Quelle est la différence principale entre une interface et une classe abstraite ?
+- A) Une interface ne peut contenir aucune méthode
+- B) Une classe peut implémenter plusieurs interfaces mais hériter d'une seule classe abstraite
+- C) Les classes abstraites ne peuvent pas avoir de méthodes
+- D) Il n'y a aucune différence
+
+**Réponse :** B) Une classe peut implémenter plusieurs interfaces mais hériter d'une seule classe abstraite
+
+---
+
+**Question 2 :** Une classe abstraite peut-elle avoir des méthodes concrètes (avec implémentation) ?
+- A) Oui, elle peut mélanger méthodes abstraites et concrètes
+- B) Non, toutes les méthodes doivent être abstraites
+- C) Seulement si elle n'a pas de constructeur
+- D) Seulement les méthodes privées
+
+**Réponse :** A) Oui, elle peut mélanger méthodes abstraites et concrètes
+
+---
+
+### Quiz 3 : Les Collections
+
+**Question 1 :** Quelle collection utiliser pour garantir l'unicité des éléments ?
+- A) `ArrayList`
+- B) `LinkedList`
+- C) `HashSet`
+- D) `HashMap`
+
+**Réponse :** C) `HashSet`
+
+---
+
+**Question 2 :** Dans une `Map`, comment s'appellent les deux éléments d'une paire ?
+- A) Nom et Valeur
+- B) Clé et Valeur
+- C) Index et Élément
+- D) Premier et Second
+
+**Réponse :** B) Clé et Valeur
+
+---
+
+**Question 3 :** Quelle est la différence entre `ArrayList` et `LinkedList` ?
+- A) `ArrayList` est plus rapide pour l'accès par index, `LinkedList` pour l'insertion/suppression en début
+- B) `LinkedList` est toujours plus rapide
+- C) Il n'y a aucune différence
+- D) `ArrayList` ne peut contenir que des nombres
+
+**Réponse :** A) `ArrayList` est plus rapide pour l'accès par index, `LinkedList` pour l'insertion/suppression en début
+
+---
+
+### Quiz 4 : Les Streams
+
+**Question 1 :** Que fait l'opération `filter()` sur un stream ?
+- A) Transforme chaque élément
+- B) Garde seulement les éléments qui respectent une condition
+- C) Trie les éléments
+- D) Compte les éléments
+
+**Réponse :** B) Garde seulement les éléments qui respectent une condition
+
+---
+
+**Question 2 :** Quelle opération est **terminale** (finalise le stream) ?
+- A) `filter()`
+- B) `map()`
+- C) `sorted()`
+- D) `collect()`
+
+**Réponse :** D) `collect()`
+
+---
+
+**Question 3 :** Que fait `.mapToInt(x -> x.getAge()).sum()` ?
+- A) Compte le nombre d'éléments
+- B) Calcule la somme des âges
+- C) Trouve l'âge maximum
+- D) Filtre les âges
+
+**Réponse :** B) Calcule la somme des âges
+
+---
+
+### Quiz 5 : Les Exceptions
+
+**Question 1 :** Quel bloc s'exécute TOUJOURS, qu'il y ait erreur ou pas ?
+- A) `try`
+- B) `catch`
+- C) `finally`
+- D) `throw`
+
+**Réponse :** C) `finally`
+
+---
+
+**Question 2 :** Quelle est la différence entre `throw` et `throws` ?
+- A) Aucune différence
+- B) `throw` lance une exception, `throws` déclare qu'une méthode peut en lancer
+- C) `throws` lance une exception, `throw` déclare
+- D) `throw` est pour les erreurs, `throws` pour les warnings
+
+**Réponse :** B) `throw` lance une exception, `throws` déclare qu'une méthode peut en lancer
+
+---
+
+**Question 3 :** Quelle exception hérite de `RuntimeException` ?
+- A) `IOException`
+- B) `SQLException`
+- C) `NullPointerException`
+- D) `FileNotFoundException`
+
+**Réponse :** C) `NullPointerException`
+
+---
+
+### Quiz 6 : Optional
+
+**Question 1 :** Que retourne `Optional.empty()` ?
+- A) `null`
+- B) Une exception
+- C) Un Optional vide
+- D) Une erreur de compilation
+
+**Réponse :** C) Un Optional vide
+
+---
+
+**Question 2 :** Quelle méthode utiliser pour fournir une valeur par défaut si l'Optional est vide ?
+- A) `get()`
+- B) `isPresent()`
+- C) `orElse()`
+- D) `map()`
+
+**Réponse :** C) `orElse()`
+
+---
+
+**Question 3 :** Pourquoi utiliser Optional plutôt que `null` ?
+- A) C'est plus rapide
+- B) Ça force à vérifier explicitement la présence d'une valeur
+- C) Ça prend moins de mémoire
+- D) C'est obligatoire en Java
+
+**Réponse :** B) Ça force à vérifier explicitement la présence d'une valeur
+
+---
+
+## 🎓 Mini-Projets Supplémentaires
+
+### Projet 1 : Gestionnaire de Bibliothèque
+
+**Objectif :** Créer un système de gestion de bibliothèque avec :
+- Classe `Livre` (titre, auteur, ISBN, disponible)
+- Classe `Emprunteur` (nom, matricule, livres empruntés)
+- Classe `Bibliotheque` (stock de livres, liste d'emprunteurs)
+
+**Fonctionnalités :**
+1. Ajouter/supprimer des livres
+2. Emprunter/retourner des livres
+3. Rechercher des livres par auteur ou titre
+4. Afficher l'historique d'un emprunteur
+5. Sauvegarder/charger depuis un fichier
+
+**Concepts utilisés :** Classes, Collections (List, Map), Fichiers I/O, Optional, Exceptions
+
+---
+
+### Projet 2 : Application Bancaire Simple
+
+**Objectif :** Créer une mini-banque avec :
+- Classe `CompteBancaire` (numéro, solde, titulaire, historique)
+- Classe `Transaction` (date, type, montant)
+- Enum `TypeTransaction` (DEPOT, RETRAIT, VIREMENT)
+
+**Fonctionnalités :**
+1. Créer/fermer des comptes
+2. Déposer/retirer de l'argent
+3. Effectuer des virements entre comptes
+4. Consulter l'historique des transactions
+5. Calculer le solde moyen sur une période
+6. Sauvegarder les données
+
+**Concepts utilisés :** Classes, Enums, Collections, Streams, Fichiers I/O, Exceptions personnalisées
+
+---
+
+### Projet 3 : Gestionnaire de Tournoi de Foot
+
+**Objectif :** Gérer un tournoi de football avec :
+- Classe `Equipe` (nom, pays, joueurs, points)
+- Classe `Joueur` (nom, numéro, poste, buts)
+- Classe `Match` (équipe1, équipe2, score1, score2, date)
+- Classe `Tournoi` (nom, équipes, matchs, classement)
+
+**Fonctionnalités :**
+1. Ajouter des équipes et des joueurs
+2. Organiser des matchs
+3. Enregistrer les résultats
+4. Calculer le classement automatiquement
+5. Afficher les statistiques (meilleur buteur, etc.)
+6. Générer le calendrier des matchs
+
+**Concepts utilisés :** Classes, Collections, Streams (tri, filtrage), Optional
+
+---
+
+## 💎 Astuces et Pièges à Éviter
+
+### 🎯 Astuces Classes
+
+**✅ ASTUCE 1 : Utilise toujours `private` pour les attributs**
+```java
+// ❌ MAUVAIS
+public class Personne {
+    public String nom; // N'importe qui peut modifier
+}
+
+// ✅ BON
+public class Personne {
+    private String nom;
+
+    public String getNom() { return nom; }
+    public void setNom(String nom) {
+        if (nom != null && !nom.isEmpty()) {
+            this.nom = nom;
+        }
+    }
+}
+```
+
+**✅ ASTUCE 2 : Override `toString()` pour faciliter le débogage**
+```java
+@Override
+public String toString() {
+    return "Eleve{nom='" + nom + "', note=" + note + "}";
+}
+```
+
+**⚠️ PIÈGE : Oublier `this` dans le constructeur**
+```java
+// ❌ Bug subtil !
+public Personne(String nom) {
+    nom = nom; // Ça ne fait rien !
+}
+
+// ✅ Correct
+public Personne(String nom) {
+    this.nom = nom;
+}
+```
+
+---
+
+### 🎯 Astuces Collections
+
+**✅ ASTUCE 1 : Déclare avec l'interface, instancie avec l'implémentation**
+```java
+// ✅ BON
+List<String> liste = new ArrayList<>();
+
+// ❌ MOINS FLEXIBLE
+ArrayList<String> liste = new ArrayList<>();
+```
+
+**✅ ASTUCE 2 : Utilise `getOrDefault()` avec Map**
+```java
+// ❌ LONG
+Integer stock = stocks.get("Attiéké");
+if (stock == null) {
+    stock = 0;
+}
+
+// ✅ COURT
+int stock = stocks.getOrDefault("Attiéké", 0);
+```
+
+**⚠️ PIÈGE : Modifier une liste pendant qu'on la parcourt**
+```java
+// ❌ ConcurrentModificationException !
+for (String item : liste) {
+    if (item.equals("supprimer")) {
+        liste.remove(item); // BOOM !
+    }
+}
+
+// ✅ Utilise Iterator ou stream
+liste.removeIf(item -> item.equals("supprimer"));
+```
+
+---
+
+### 🎯 Astuces Streams
+
+**✅ ASTUCE 1 : Les streams sont lazy (paresseux)**
+```java
+// Ce code ne fait RIEN car pas d'opération terminale
+liste.stream()
+    .filter(x -> x > 10)
+    .map(x -> x * 2); // Rien ne se passe !
+
+// ✅ Ajoute collect() ou forEach()
+liste.stream()
+    .filter(x -> x > 10)
+    .map(x -> x * 2)
+    .collect(Collectors.toList()); // Maintenant ça s'exécute
+```
+
+**✅ ASTUCE 2 : Utilise `mapToInt()` pour les calculs**
+```java
+// ✅ Plus efficace
+int somme = nombres.stream()
+    .mapToInt(Integer::intValue)
+    .sum();
+```
+
+**⚠️ PIÈGE : Ne pas réutiliser un stream**
+```java
+// ❌ Erreur !
+Stream<String> stream = liste.stream();
+stream.forEach(System.out::println);
+stream.forEach(System.out::println); // IllegalStateException !
+
+// ✅ Crée un nouveau stream
+liste.stream().forEach(System.out::println);
+liste.stream().forEach(System.out::println);
+```
+
+---
+
+### 🎯 Astuces Exceptions
+
+**✅ ASTUCE 1 : Crée des exceptions spécifiques**
+```java
+// ✅ BON
+throw new StockInsuffisantException("Attiéké", 5, 10);
+
+// ❌ MOINS CLAIR
+throw new Exception("Problème de stock");
+```
+
+**✅ ASTUCE 2 : Try-with-resources pour les fichiers**
+```java
+// ✅ Fermeture automatique
+try (BufferedReader reader = new BufferedReader(new FileReader("fichier.txt"))) {
+    String ligne = reader.readLine();
+} // Pas besoin de close(), c'est automatique !
+```
+
+**⚠️ PIÈGE : Catch trop général**
+```java
+// ❌ Cache tous les bugs !
+try {
+    // code...
+} catch (Exception e) {
+    // On ignore tout !
+}
+
+// ✅ Catch spécifique
+try {
+    // code...
+} catch (IOException e) {
+    // Gère l'erreur fichier
+} catch (NumberFormatException e) {
+    // Gère l'erreur de parsing
+}
+```
+
+---
+
+### 🎯 Astuces Optional
+
+**✅ ASTUCE 1 : Utilise `ifPresentOrElse()` (Java 9+)**
+```java
+optional.ifPresentOrElse(
+    valeur -> System.out.println("Trouvé : " + valeur),
+    () -> System.out.println("Pas trouvé")
+);
+```
+
+**⚠️ PIÈGE : Ne jamais faire `.get()` sans vérifier**
+```java
+// ❌ Peut planter !
+String nom = optional.get();
+
+// ✅ Vérifie d'abord
+if (optional.isPresent()) {
+    String nom = optional.get();
+}
+
+// ✅ Ou utilise orElse
+String nom = optional.orElse("Inconnu");
+```
+
+---
+
+## 🚀 Exercices de Synthèse
+
+### Exercice Final 1 : Super Maquis 2.0
+
+Améliore le projet du maquis en ajoutant :
+
+**Nouvelles fonctionnalités :**
+1. **Système de fidélité** : Après 5 commandes, 10% de remise
+2. **Gestion des horaires** : Le maquis ouvre à 11h et ferme à 22h
+3. **Stock d'ingrédients** : Chaque plat nécessite des ingrédients en stock
+4. **Statistiques avancées** : Plat le plus rentable, heure de pointe, client VIP
+5. **Notifications** : Alertes quand le stock est bas
+6. **Export** : Générer un rapport journalier dans un fichier
+
+**Contraintes techniques :**
+- Utiliser des Enums pour les horaires
+- Gérer toutes les erreurs avec des exceptions personnalisées
+- Sauvegarder tout dans des fichiers (stock, commandes, clients)
+- Utiliser les Streams pour toutes les statistiques
+
+---
+
+### Exercice Final 2 : Système de Transport SOTRA
+
+Crée un système de gestion de transport inspiré de la SOTRA (transport d'Abidjan) :
+
+**Classes nécessaires :**
+- `Ligne` (numéro, trajet, prix, véhicules)
+- `Vehicule` (abstrait : Gbaka, Bus, BakabaKa)
+- `Trajet` (départ, arrivée, heure, passagers)
+- `Passager` (nom, carte, solde)
+- `Gare` (nom, lignes disponibles, horaires)
+
+**Fonctionnalités :**
+1. Créer des lignes de transport
+2. Gérer plusieurs types de véhicules par ligne
+3. Système de carte de transport (recharge, débit)
+4. Horaires des départs
+5. Statistiques : ligne la plus fréquentée, heures de pointe
+6. Sauvegarde persistante
+
+---
+
+## 📚 Ressources Supplémentaires
+
+### Commandes utiles pour pratiquer
+
+**Compiler et exécuter :**
+```bash
+javac MaClasse.java
+java MaClasse
+```
+
+**Compiler un projet avec plusieurs fichiers :**
+```bash
+javac -d bin src/**/*.java
+java -cp bin Main
+```
+
+**Créer un JAR exécutable :**
+```bash
+jar cvfe MonAppli.jar Main *.class
+java -jar MonAppli.jar
+```
+
+### Liens utils (si tu as internet)
+
+1. Documentation officielle Java : https://docs.oracle.com/javase/
+2. Practice en ligne : https://www.hackerrank.com/domains/java
+3. Exercices : https://www.codingbat.com/java
+
+---
 
 **Bon code, petit frère ! 🚀🇨🇮**
+
+_"Un bon programmeur, c'est comme un bon chauffeur de gbaka : il connaît tous les raccourcis, évite les pièges, et arrive toujours à destination !"_
